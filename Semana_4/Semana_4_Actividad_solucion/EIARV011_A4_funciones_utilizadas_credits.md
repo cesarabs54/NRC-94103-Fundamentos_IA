@@ -1,6 +1,6 @@
-# Funciones utilizadas en `EIARV011_A4_analisis.ipynb`
+# Funciones utilizadas en `EIARV011_A4_analisis_credits.ipynb`
 
-Este documento resume, en lenguaje claro, las funciones y métodos usados en la actividad de la semana 4 para que puedas entender qué hace cada uno y por qué aparece en el análisis.
+Este documento resume, en lenguaje claro, las funciones y métodos usados en el análisis del dataset `credits.csv` (Netflix TV Shows and Movies) en la actividad de la semana 4 para que puedas entender qué hace cada uno y por qué aparece en el análisis.
 
 ## 1) Funciones de importación y configuración
 

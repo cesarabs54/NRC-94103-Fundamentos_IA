@@ -57,3 +57,16 @@ A partir de la información revisada en la semana y del contenido del [anexo](EI
 ## Rol del profesor
 
 El profesor acompañará y orientará la participación en el foro a través de los canales de comunicación del curso. También apoyará el análisis de los contenidos, la generación de discusiones significativas, la resolución de inquietudes y la retroalimentación final de acuerdo con la rúbrica de evaluación.
+
+## Rúbrica. Foro de discusión
+
+| Criterio | No evaluable (0) | Insuficiente (1.9) | Regular (2.9) | Bueno (3.9) | Excelente (5) |
+|---|---|---|---|---|---|
+| **Pertinencia de las participaciones** | No participa en la actividad. | Las respuestas a la pregunta planteada y la participación en las discusiones no evidencian un dominio del tema. Además, no genera debate frente a los argumentos de sus compañeros ni retoma información para enriquecer el diálogo. | La respuesta a la pregunta planteada y la participación en las discusiones evidencian un dominio superficial del tema. Además, genera debate frente a los argumentos de sus compañeros, pero integrando información irrelevante y endeble. | Las respuestas a la pregunta planteada y la participación en las discusiones evidencian un dominio del tema. Además, genera debate frente a los argumentos de sus compañeros integrando información complementaria. | Las respuestas a la pregunta planteada y la participación en las discusiones evidencian un profundo dominio del tema. Además, genera debate frente a los argumentos de sus compañeros integrando información relevante y consistente. |
+| *Puntaje* | 0 | 0.8 | 1.2 | 1.6 | 2 |
+| **Capacidad de análisis en el debate con sus compañeros** | No participa en la actividad. | No analiza las intervenciones de sus compañeros ni plantea un debate frente a los argumentos de sus pares. | Analiza, con un carácter ambiguo e impreciso, las intervenciones de sus compañeros y plantea un debate en el que solo retoma los argumentos de sus pares. | Analiza, de forma clara, aunque con mínimas imprecisiones, las intervenciones de sus compañeros y plantea un debate en el que controvierte los argumentos de sus pares. | Analiza, de forma clara y precisa, las intervenciones de sus compañeros y plantea un debate en el que controvierte críticamente los argumentos de sus pares. |
+| *Puntaje* | 0 | 0.3 | 0.5 | 0.7 | 1 |
+| **Abordaje de preguntas** | No participa en la actividad. | No responde a la pregunta planteada para el desarrollo del tema de discusión, sus ideas y argumentos no corresponden al tema abordado. | Responde a la pregunta planteada para el desarrollo del tema de discusión, sin embargo, se hace de manera superficial y sus ideas y argumentos no corresponden directamente al tema abordado. | Responde de manera general a la pregunta planteada para el desarrollo del tema de discusión, sus ideas y argumentos corresponden al tema abordado. | Responde de manera clara y precisa a la pregunta planteada para el desarrollo del tema de discusión, sus ideas y argumentos corresponden totalmente al tema abordado. |
+| *Puntaje* | 0 | 0.8 | 1.2 | 1.6 | 2 |
+
+**Puntaje total: 5 puntos** (2 + 1 + 2, sumando el mayor puntaje posible de cada criterio).

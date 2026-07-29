@@ -45,7 +45,7 @@
 | 3 | Frameworks para inteligencia artificial. | Usa frameworks para inteligencia artificial.                                        | Semana_3 | EIARV011_F3_Foro.md EIARV011_F3_Anexo.md                       |
 | 4 | Librerías para cálculo numérico, análisis y visualización de datos. | Experimenta con las librerías Matplotlib y Seaborn Utiliza librerías Numpy y SciPy  | Semana_4  | EIARV011\_A4.md EIARV011\_A4\_Anexo.md                         |
 | 5 | Estadística básica y visualización de datos. | Integra la estadística básica y visualización de datos.                             | Semana_5  |                                                                |
-| 6 | Estadística inferencial I: prueba de hipótesis. | Integra la estadística básica y visualización de datos.                             | Semana_6  |                                                                |
+| 6 | Estadística inferencial I: prueba de hipótesis. | Integra la estadística básica y visualización de datos.                             | Semana_6  | EIARV011_A6.pdf |
 | 7 | Estadística inferencial II: regresión lineal. | Argumenta la regresión lineal.                                                      | Semana_7  |                                                                |
 | 8 | Estadística inferencial III: regresión logística. | Relaciona la regresión logística.                                                   | Semana_8  |                                                                |
 

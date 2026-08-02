@@ -2,12 +2,14 @@
 
 **Institución:** Universidad Minuto de Dios (UNIMINUTO)  
 **Curso:** Fundamentos para Inteligencia Artificial  
-**Programa académico:** Especialización en Inteligencia Artificial  
+**Programa académico:** [Especialización en Inteligencia Artificial](Especializacion_inteligencia_artificial.pdf)  
 **Modalidad:** Virtual  
 **Herramientas:** Google Colab / Jupyter Notebook  
 **Docente:** Ing. de sistemas César Alfonso Bolado Silva
 
 ## 🎓 Temática del curso
+
+<img src="FIATC1021.png" alt="FIATC1021" width="450">
 
 - ✅ **Semana 1:** Introducción a Python para inteligencia artificial.
 - ✅ **Semana 2:** Python para ciencia de datos.

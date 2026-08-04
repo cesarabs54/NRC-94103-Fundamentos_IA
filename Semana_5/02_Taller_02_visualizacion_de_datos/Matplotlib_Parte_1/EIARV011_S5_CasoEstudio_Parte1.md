@@ -3,7 +3,6 @@
 **Curso:** Fundamentos para Inteligencia Artificial — NRC 94103
 **Semana 5:** Estadística básica y visualización de datos
 **Fuente:** *Matplotlib Tutorial (Part 1)* — basado en la Stack Overflow Developer Survey 2019
-**Versión:** Estudiante
 
 ## Presentación del caso
 

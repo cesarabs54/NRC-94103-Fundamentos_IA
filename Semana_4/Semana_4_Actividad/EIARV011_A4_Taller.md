@@ -21,38 +21,28 @@ A partir de la revisión de los recursos básicos y de los demás recursos de la
 
 **2.** Exploren un *dataset* aplicando NumPy para cálculos y transformaciones, SciPy para análisis estadístico básico, y Matplotlib/Seaborn para visualización de datos. Siguiendo los puntos: 
 
-● Elegir y cargar el *dataset* (CSV) 
+    ● Elegir y cargar el *dataset* (CSV)
+    ● Preparar datos mínimos
+    ● Aplicar NumPy
+    ● Aplicar SciPy
+    ● Visualizar con Matplotlib
+    ● Visualizar con Seaborn
 
-● Preparar datos mínimos 
-
-● Aplicar NumPy 
-
-● Aplicar SciPy 
-
-● Visualizar con Matplotlib 
-
-● Visualizar con Seaborn 
-
-● Responder las preguntas: 
-
-¿Qué fenómeno, proceso o contexto representa el *dataset*? 
-
-¿Cuáles son las 5 variables más importantes para describir el caso y por qué? 
-
-¿Qué hallazgos se observan en la distribución de variables (categóricas y numéricas)? 
-
-¿Qué relación relevante encontraron entre las variables? (mínimo 2\)
-
-**2** 
-¿Qué problemas de calidad de datos detectaron y cómo los abordan? 
-
-Con base en lo observado: ¿qué pregunta de IA o problema predictivo podría plantearse a futuro con este *dataset*? (ej: clasificación, regresión, *clustering*). 
+    Responder las preguntas: 
+    
+    - ¿Qué fenómeno, proceso o contexto representa el *dataset*? 
+    - ¿Cuáles son las 5 variables más importantes para describir el caso y por qué? 
+    - ¿Qué hallazgos se observan en la distribución de variables (categóricas y numéricas)? 
+    - ¿Qué relación relevante encontraron entre las variables? (mínimo 2)
+    - ¿Qué problemas de calidad de datos detectaron y cómo los abordan? 
+    - Con base en lo observado: ¿qué pregunta de IA o problema predictivo podría plantearse a futuro con este *dataset*? (ej: clasificación, regresión, *clustering*). 
 
 **3.** Cuiden la presentación, redacción y ortografía. Usen correctamente las normas de redacción con el fin de que escriban un texto claro, preciso y coherente en el que se evidencie una estructura concreta y las ideas se relacionen de forma fluida y articulada 
 
 **4.** Recuerden que las citas y fuentes de consulta deben apegarse a las normas APA. 
 
 **5.** Incluyan un apartado en el que agreguen el título del trabajo, sus nombres completos, el nombre del curso y el número de la semana, el nombre del docente y la fecha de entrega. 
+
 
 **Tiempos y recursos educativos para el desarrollo de la actividad Tipo de actividad:** Colaborativa 
 
@@ -62,44 +52,31 @@ Con base en lo observado: ¿qué pregunta de IA o problema predictivo podría pl
 
 **Recurso(s) básico(s):** 
 
-● Boschetti, A. y Massaron, L. (2018). ***Python Data Science Essentials: A Practitioner's Guide Covering Essential Data Science Principles, Tools, and Techniques*** (281-331). Packt Publishing Ltd. 
-
-● Yim, A., Chung, C., & Yu, A. (2018). ***Matplotlib for python developers : Effective techniques for data visualization with python, 2nd edition*** (pp. 21-54). Packt Publishing, Limited. 
+    ● Boschetti, A. y Massaron, L. (2018). ***Python Data Science Essentials: A Practitioner's Guide Covering Essential Data Science Principles, Tools, and Techniques*** (281-331). Packt Publishing Ltd.
+    ● Yim, A., Chung, C., & Yu, A. (2018). ***Matplotlib for python developers : Effective techniques for data visualization with python, 2nd edition*** (pp. 21-54). Packt Publishing, Limited. 
 
 **Recurso(s) complementario(s):** 
 
-● Fuentes, A. (2018).***Become a python data analyst: Perform exploratory data analysis and gain insight into scientific computing using python*** (69-118). Packt Publishing, Limited.
-
-**3** 
-● Mehta, H. (2015). ***Mastering Python Scientific Computing*** (163-198). Packt Publishing, Limited. 
-
-● Soeiro, V. (2022). ***Netflix TV Shows and Movies***. Kaggle. 
-
-● **Google Colab** 
-
-● **Jupyter** 
-
-● **Anaconda** 
+    ● Fuentes, A. (2018).***Become a python data analyst: Perform exploratory data analysis and gain insight into scientific computing using python*** (69-118). Packt Publishing, Limited.
+    ● Mehta, H. (2015). ***Mastering Python Scientific Computing*** (163-198). Packt Publishing, Limited.
+    ● Soeiro, V. (2022). ***Netflix TV Shows and Movies***. Kaggle.
+    ● **Google Colab**
+    ● **Jupyter**
+    ● **Anaconda** 
 
 **Rol del profesor**: A través de los canales de comunicación del curso, acompañará y guiará la elaboración del taller, orientando el proceso de análisis del *dataset*, la aplicación adecuada de NumPy y SciPy, y la construcción de visualizaciones con Matplotlib y Seaborn. Además, apoyará la formulación de criterios para comparar y argumentar la elección de cada librería según el objetivo del análisis (cálculo, estadística o visualización). Asimismo, aclarará inquietudes, ampliará conceptos, brindará retroalimentación y, finalmente, evaluará la actividad de acuerdo con los criterios establecidos en la rúbrica. 
 
 **Forma de entrega:** 
 
-• Carguen en la plataforma un único archivo PDF correspondiente al desarrollo del taller. 
+    • Carguen en la plataforma un único archivo PDF correspondiente al desarrollo del taller. 
+    • Adjunten el enlace público del Notebook (Colab o Jupyter) con permisos de visualización habilitados. 
+    • Nombren el archivo de la siguiente manera: 
+        primerapellido_primernombre_nombredelaactividad. 
+        Ejemplo: romero_luis_taller 
 
-• Adjunten el enlace público del Notebook (Colab o Jupyter) con permisos de visualización habilitados. 
-
-• Nombren el archivo de la siguiente manera: 
-
-primerapellido_primernombre_nombredelaactividad. 
-
-Ejemplo: romero_luis_taller 
-
-• Den clic en **Empezar tarea** para subir su trabajo a la plataforma. Carguen su archivo nuevo o seleccionen uno previamente subido. 
-
-• Una vez listo, den clic en **Entregar tarea** para finalizar la entrega; de lo contrario, el archivo no se guardará y no se habrá entregado. 
-
-• Consulten el instrumento de evaluación para conocer a detalle los criterios con los que serán evaluados.
+    • Den clic en **Empezar tarea** para subir su trabajo a la plataforma. Carguen su archivo nuevo o seleccionen uno previamente subido. 
+    • Una vez listo, den clic en **Entregar tarea** para finalizar la entrega; de lo contrario, el archivo no se guardará y no se habrá entregado. 
+    • Consulten el instrumento de evaluación para conocer a detalle los criterios con los que serán evaluados.
 
 **4** 
 **Rúbrica. *Taller***

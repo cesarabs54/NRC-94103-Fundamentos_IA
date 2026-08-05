@@ -6,7 +6,7 @@ Este documento retoma las ideas de [`01_Estadistica_inferencial_conceptos.md`](0
 Aquí solo se explica la parte estadística — sin código de programación. Todos los ejemplos y ejercicios usan
 `StudentsPerformance.csv` (1000 estudiantes), el mismo *dataset* del portafolio; si quieres ver cómo se
 calcula todo esto con Python, esa versión está en el *notebook* del portafolio y en
-[`Taller_02_Prueba_Hipotesis.md`](Taller_02_Prueba_Hipotesis_conceptos.md).
+[`Taller_02_Prueba_Hipotesis.md`](Taller_03_Prueba_Hipotesis_conceptos.md).
 
 Si nunca has visto estos conceptos, empieza por el documento `01`; si ya los conoces y quieres ver cómo se
 aplican paso a paso, sigue leyendo aquí.
@@ -145,9 +145,9 @@ P(H0 | datos). Son cantidades diferentes y no se pueden intercambiar (es el mism
 independientes en una variable numérica y obtienes estos resultados: Shapiro-Wilk grupo A → *p* = 0.002;
 Shapiro-Wilk grupo B → *p* = 0.41; Levene (varianzas) → *p* = 0.03.
 
-a) ¿Se cumple la normalidad en los dos grupos?
-b) ¿Se cumple la homogeneidad de varianzas?
-c) ¿Qué prueba usarías en el paso 5 para comparar las medias, y por qué?
+    a) ¿Se cumple la normalidad en los dos grupos?
+    b) ¿Se cumple la homogeneidad de varianzas?
+    c) ¿Qué prueba usarías en el paso 5 para comparar las medias, y por qué?
 
 <details>
 <summary>Ver solución explicada</summary>
@@ -195,7 +195,7 @@ sensible a desviaciones pequeñas de la normalidad que no invalidan la prueba t 
 Límite Central** — por eso, en la práctica, se reporta la prueba t como principal y Mann-Whitney U como
 verificación, en vez de descartar la prueba t por completo.
 
-**Paso 5 — Aplicar la prueba.** t de Student: t = 5.3832, df = 998, *p*-value = 9.12×10⁻⁸. Como verificación,
+**Paso 5 — Aplicar la prueba t** de Student: t = 5.3832, df = 998, *p*-value = 9.12×10⁻⁸. Como verificación,
 Mann-Whitney U: *p*-value = 4.28×10⁻⁷ (misma conclusión).
 
 **Paso 6 — Decisión.** p-value ≪ α (0.05) en ambas pruebas → **se rechaza H0**.
@@ -213,11 +213,13 @@ ya calculados, para `writing score` según `lunch`:
 | `standard` | 645 | 70.82 |
 | `free/reduced` | 355 | 63.02 |
 
-Levene (varianzas): *p* = 0.105. Prueba t: t = 8.01, *p* = 3.19×10⁻¹⁵. Mann-Whitney U: *p* = 5.08×10⁻¹⁴.
+    - Levene (varianzas): p = 0.105.
+    - Prueba t: t = 8.01, p = 3.19×10⁻¹⁵. 
+    - Mann-Whitney U: p = 5.08×10⁻¹⁴.
 
-a) ¿Se rechaza o no se rechaza H0?
-b) Redacta la interpretación en una frase, conectada con la pregunta de si el tipo de almuerzo se relaciona
-con el puntaje de escritura.
+    a) ¿Se rechaza o no se rechaza H0?
+    b) Redacta la interpretación en una frase, conectada con la pregunta de si el tipo de almuerzo se relaciona
+    con el puntaje de escritura.
 
 <details>
 <summary>Ver solución explicada</summary>
@@ -333,6 +335,6 @@ respuesta con el contexto, no memorizar cuál error es "siempre peor".
 | Interpretación | Traducir el resultado a la pregunta original, distinguiendo asociación de causalidad |
 
 **Material relacionado en esta carpeta:** presentación [`02_Prueba_Hipotesis.pptx`](02_Prueba_Hipotesis_conceptos.pptx),
-taller [`Taller_02_Prueba_Hipotesis.md`](Taller_02_Prueba_Hipotesis_conceptos.md) (con código en Python y su clave de
+taller [`Taller_02_Prueba_Hipotesis.md`](Taller_03_Prueba_Hipotesis_conceptos.md) (con código en Python y su clave de
 respuestas), y el documento conceptual previo
 [`01_Estadistica_inferencial_conceptos.md`](01_Estadistica_inferencial_conceptos.md).

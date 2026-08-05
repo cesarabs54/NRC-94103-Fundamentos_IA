@@ -1,7 +1,6 @@
 # Taller en clase: Estadística Inferencial y Test de Hipótesis (con Python)
 
 **Fundamentos para IA · NRC 94103 · Semana 6**
-**Versión estudiante**
 
 **Dataset de trabajo:** `StudentsPerformance.csv` (1000 registros de estudiantes).
 

@@ -348,10 +348,62 @@ automáticamente, como viste en el Ejercicio 2 del taller con código.)*
 
 ---
 
+## Ejercicio 7 — De comparar grupos a regresión: la variable *dummy* y Levene
+
+Hasta ahora `X` fue siempre un número (horas de estudio). Pero `X` también puede ser una variable
+**categórica de dos grupos**, convertida en 0 y 1 (una variable **dummy**) — como `gender` en
+`StudentsPerformance.csv`. Este ejercicio usa datos reales (no el caso de las 6 horas de estudio) para
+mostrar que comparar dos grupos es, en el fondo, una regresión lineal con una sola variable dummy.
+
+*Datos reales:* `writing score` entre hombres (n=482, media=63.31) y mujeres (n=518, media=72.47).
+Antes de comparar esas medias con una prueba t, se comprobó el supuesto de homogeneidad de varianzas con
+Levene: **p = 0.934**.
+
+**Tarea:**
+
+a) Con la regla de siempre (α = 0.05), decide si el supuesto de homogeneidad de varianzas se cumple o no,
+a partir de ese p-value de Levene.
+b) Define `X = 0` para hombres y `X = 1` para mujeres. En una regresión `Y = b0 + b1·X` con una variable
+dummy de dos grupos, `b0` es la media del grupo de referencia (`X=0`) y `b1` es la diferencia de medias
+entre los dos grupos. Con esa regla, calcula `b0` y `b1` usando las medias dadas arriba (sin necesidad de
+sumas ni desviaciones).
+
+`b0 = ____`
+
+`b1 = ____ − ____ = ____`
+
+c) Escribe la ecuación completa de la recta y verifica: ¿qué predice para `X=0` y para `X=1`? ¿Coincide con
+las medias reales de cada grupo?
+
+<details>
+<summary>Ver solución explicada</summary>
+
+**a)** `p = 0.934 > 0.05` → **no se rechaza H0 de Levene**: las varianzas de `writing score` son homogéneas
+entre hombres y mujeres. Esto valida usar la prueba t clásica (o esta misma regresión con variable dummy)
+para comparar sus promedios.
+
+**b)** `b0 = media de hombres (X=0) = 63.31`. `b1 = media de mujeres − media de hombres = 72.47 − 63.31 = 9.16`.
+
+**c)** `writing score = 63.31 + 9.16 · X`. Para `X=0` (hombre): `63.31 + 9.16 × 0 = 63.31` — coincide
+exactamente con la media real de los hombres. Para `X=1` (mujer): `63.31 + 9.16 × 1 = 72.47` — coincide
+exactamente con la media real de las mujeres. Esto confirma que comparar dos grupos con sus medias es
+matemáticamente idéntico a ajustar una regresión lineal simple con una variable dummy: el intercepto es la
+media del grupo de referencia, y la pendiente es la diferencia de medias entre grupos.
+
+*(Nota: a diferencia de los Ejercicios 1 a 6, aquí no se pide calcular Levene a mano — con n=482 y n=518
+sería un cálculo enorme para hacer con lápiz y papel. Lo importante de este ejercicio es la conexión
+conceptual: el mismo marco de la regresión lineal (b0, b1, supuestos como homogeneidad de varianzas) sirve
+tanto para predecir con una variable numérica (horas de estudio) como para comparar dos grupos con una
+variable categórica.)*
+
+</details>
+
+---
+
 ## Resumen: de estas fórmulas a la Semana 8
 
-Estos 6 ejercicios cubren, a mano, el mismo camino que recorrerás con código en el resto de la Semana 7:
+Estos 7 ejercicios cubren, a mano, el mismo camino que recorrerás con código en el resto de la Semana 7:
 medias y desviaciones → covarianza y correlación → coeficientes de la recta → R² → predicción y residuos →
-prueba de hipótesis sobre la pendiente. En la Semana 8 (regresión logística) volverás a usar exactamente
-estas mismas ideas — coeficientes, H0/H1, p-values, ajuste del modelo — pero aplicadas a predecir una
-**categoría** (sí/no) en lugar de un número continuo.
+prueba de hipótesis sobre la pendiente → comparación de grupos con variable dummy y Levene. En la Semana 8
+(regresión logística) volverás a usar exactamente estas mismas ideas — coeficientes, H0/H1, p-values, ajuste
+del modelo — pero aplicadas a predecir una **categoría** (sí/no) en lugar de un número continuo.

@@ -5,10 +5,11 @@
 **Dataset de trabajo:** `StudentsPerformance.csv` (1000 registros de estudiantes).
 
 Este taller desarrolla **en código Python** los 6 conceptos de
-[`01_Regresion_lineal_conceptos_basicos.md`](01_Regresion_lineal_conceptos_basicos.md). Ahí los viste con
-ejemplos y ejercicios en papel; aquí vas a comprobarlos con `pandas`, `scipy.stats` y `statsmodels`, paso a
-paso, sobre las notas reales de lectura, escritura y matemáticas de 1000 estudiantes. Trabajen en parejas o
-grupos pequeños, en un *notebook* (Colab, Jupyter o Anaconda).
+[`01_Regresion_lineal_conceptos_basicos.md`](01_Regresion_lineal_conceptos_basicos.md), más el ejemplo
+aplicado de Levene de la sección 5 (Ejercicio 7). Ahí los viste con ejemplos y ejercicios en papel; aquí vas
+a comprobarlos con `pandas`, `scipy.stats` y `statsmodels`, paso a paso, sobre las notas reales de lectura,
+escritura y matemáticas de 1000 estudiantes. Trabajen en parejas o grupos pequeños, en un *notebook* (Colab,
+Jupyter o Anaconda).
 
 **Configuración inicial** (ejecuta esto una sola vez, al comienzo):
 
@@ -191,5 +192,39 @@ b) ¿Por qué `aprobo_escritura` (una columna de solo 0 y 1) no es el mejor caso
 lineal clásica? ¿Qué tipo de modelo sería más adecuado?
 c) Menciona un contexto real (fuera del ámbito educativo) donde usarías regresión lineal, y otro donde
 usarías un modelo de clasificación en su lugar.
+
+---
+
+## Ejercicio 7 — Comparar grupos con Python: Levene y variable dummy
+
+*(Corresponde al "Ejemplo aplicado" de la sección 5 de `01_...md`.)* Vas a comprobar con código el ejemplo
+de `writing score` entre hombres y mujeres, y a verificar que comparar dos grupos con una prueba t es lo
+mismo que ajustar una regresión lineal con una variable *dummy*.
+
+```python
+hombres = df.loc[df["gender"] == "male", "writing score"]
+mujeres = df.loc[df["gender"] == "female", "writing score"]
+
+levene_resultado = stats.levene(hombres, mujeres)
+print(f"Levene -> estadístico={levene_resultado.statistic:.4f}, p-value=____")
+
+ttest_resultado = stats.ttest_ind(hombres, mujeres, equal_var=True)
+print(f"t-test -> t=____, p-value=____")
+
+df["gender_dummy"] = (df["gender"] == "female").astype(int)
+resultado_dummy = stats.linregress(df["gender_dummy"], df["writing score"])
+print(f"Regresión dummy -> b0=____, b1=____, p-value=____")
+
+print(df.groupby("gender")["writing score"].mean())
+```
+
+**Preguntas:**
+
+a) Con el p-value de Levene que obtuviste, ¿se cumple el supuesto de homogeneidad de varianzas? Usa la
+regla de siempre (α = 0.05).
+b) Compara el p-value del t-test con el p-value de la regresión con variable dummy. ¿Qué relación notas
+entre ambos resultados?
+c) Compara `b0` y `b1` de la regresión dummy con las medias que imprime `df.groupby("gender")["writing
+score"].mean()`. ¿Qué representa cada coeficiente?
 
 ---

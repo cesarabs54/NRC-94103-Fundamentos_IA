@@ -67,6 +67,29 @@ llamada **prueba de Wald**, basada en un estadístico *z*): nos dice qué tan pr
 coeficiente que vemos si, en realidad, esa variable no influyera en nada. Si el p-value es menor a 0.05,
 rechazamos H0 y decimos que la variable sí aporta información útil para clasificar.
 
+Antes de ver la tabla, vale la pena separar dos ideas que se confunden fácil: **probabilidad** y **momios
+(*odds*)**.
+
+- La **probabilidad** de aprobar es simplemente `p`, un número entre 0 y 1.
+- Los **momios (*odds*)** comparan la probabilidad de que el evento ocurra con la probabilidad de que **no**
+  ocurra (su **complemento**, `1 - p`):
+
+```
+odds = p / (1 - p)
+```
+
+**Analogía:** es la misma idea de las apuestas deportivas. Si un equipo tiene "momios de 3 a 1" para ganar,
+se considera 3 veces más probable que gane a que pierda (`odds = 3`). Si `odds > 1`, el evento es **más
+probable** que su contrario; si `odds < 1`, es **menos probable**.
+
+**Ejemplo con los datos:** para un estudiante con `reading score = 70`, el modelo estima `p ≈ 0.814` (lo
+vas a calcular tú mismo en el Ejercicio 3). Sus momios de aprobar son
+`0.814 / (1 - 0.814) = 0.814/0.186 ≈ 4.38`: casi 4.4 veces más probable que apruebe a que no apruebe.
+
+Con esto se entiende mejor la última fila de la siguiente tabla, la **razón de momios (odds ratio)**: no
+compara `p` contra `1-p` para un solo estudiante, sino cómo cambian esos momios cuando `X` sube en una
+unidad.
+
 | Concepto | Descripción breve | Importancia |
 |---|---|---|
 | **Coeficiente (b1)** | Mide cómo cambia el *log-odds* (la versión "en escala logarítmica" de la probabilidad) del evento por cada unidad que sube la variable independiente. | Su signo indica si la variable aumenta o disminuye la probabilidad del evento; su tamaño, junto con el p-value, indica qué tan fuerte y confiable es esa relación. |
@@ -105,7 +128,22 @@ variables independientes (`X`) y la **probabilidad** de que ocurra un evento bin
 `Y = 0` si no aprueba). En vez de una línea recta, usa una curva en forma de "S" llamada **función
 sigmoide**, que siempre da valores entre 0 y 1 (como debe ser una probabilidad).
 
-La ecuación se construye en dos pasos:
+Hay dos formas equivalentes de escribir el mismo modelo, y conviene reconocer ambas:
+
+**Forma clásica — el modelo es lineal en el *logit* (log-odds), no en la probabilidad:**
+
+```
+log( p(x) / (1 - p(x)) ) = b0 + b1 * X
+```
+
+**Analogía:** piensa en la probabilidad como una manguera doblada en forma de "S" — es difícil medirla con
+una regla recta porque se curva. El *logit* (`log(p/(1-p))`, el logaritmo de los momios que viste arriba) es
+como "desdoblar" esa manguera: convierte la curva en una línea recta, para poder seguir usando la misma idea
+de "combinación lineal de variables" que ya conocías de la regresión lineal (Semana 7). Por eso se dice que
+la regresión logística es **lineal en el logit**, y esta es, de hecho, la forma en la que suele presentarse
+el modelo en un examen o en un libro de texto.
+
+**Forma práctica — el mismo modelo, pero calculado en dos pasos, útil para hacer las cuentas a mano:**
 
 ```
 z = b0 + b1 * X                (combinación lineal, igual que en regresión lineal)
@@ -135,6 +173,8 @@ a) Calcula `z` y luego `P(Y=1)` para un estudiante con `reading score = 50`. ¿L
 aprueba o no aprueba matemáticas (umbral 0.5)?
 b) Calcula `P(Y=1)` para un estudiante con `reading score = 80`. ¿Qué decisión tomarías?
 c) El odds ratio de `reading score` es `e^0.167 ≈ 1.18`. En tus palabras, ¿qué significa ese número?
+d) Calcula los **momios (*odds*)** de aprobar para el estudiante de la parte b) (`reading score = 80`).
+¿Son mayores o menores a 1? ¿Qué significa eso?
 
 <details>
 <summary>Ver solución explicada</summary>
@@ -150,6 +190,10 @@ se multiplican por aproximadamente 1.18 (un aumento del 18%). No es un aumento d
 probabilidad"; es un efecto sobre los momios, que se traduce en un aumento de probabilidad más fuerte quienes
 están cerca del punto medio (donde `P ≈ 0.5`) que en los extremos (donde la probabilidad ya está muy cerca de
 0 o de 1).
+
+d) `odds = P/(1-P) = 0.959/(1-0.959) = 0.959/0.041 ≈ 23.4`. Como es mucho mayor a 1, para este estudiante es
+**muchísimo más probable aprobar que no aprobar** (aproximadamente 23 a 1 a favor de aprobar) — coherente
+con que su `P(Y=1)` ya está muy cerca de 1.
 
 </details>
 
@@ -269,6 +313,57 @@ categorías y convertirla en una clasificación.
 
 </details>
 
+## 7. Una trampa común: modelar vs. validar, y el problema de la colinealidad
+
+Hasta aquí viste **cómo se construye y se usa** el modelo (`z`, la sigmoide, el umbral, el odds ratio). Pero
+hay una segunda capa, distinta, que se encarga de **auditar si ese modelo es confiable**: la validación
+estadística (p-value, intervalo de confianza, y una advertencia importante llamada **colinealidad**).
+
+**Colinealidad** ocurre cuando dos (o más) variables independientes están tan correlacionadas entre sí que
+el modelo no puede distinguir bien el aporte de cada una por separado.
+
+**Ejemplo con los datos:** en `StudentsPerformance.csv`, la correlación entre `reading score` y
+`writing score` es de **0.95** (prácticamente perfecta). Si construyeras un modelo que use *ambas* variables
+al mismo tiempo para predecir si un estudiante aprueba matemáticas, el modelo tendría dificultades para
+"repartir" el efecto entre las dos: como casi siempre suben y bajan juntas, no hay suficiente información en
+los datos para saber cuánto le corresponde a cada una por separado, y los coeficientes se vuelven inestables
+(pueden cambiar mucho si agregas o quitas un estudiante de la muestra).
+
+**Analogía:** es como preguntarle a dos testigos que vieron exactamente lo mismo, desde el mismo lugar, y
+que además son mejores amigos: sus versiones van a coincidir casi siempre, así que es difícil saber cuál de
+los dos "aporta" la información real y cuál solo está repitiendo al otro.
+
+Con esto, ya puedes separar con claridad **qué pertenece a cada capa**:
+
+| Modelado (construir y usar el modelo) | Validación estadística (auditar si es confiable) |
+|---|---|
+| predictor lineal `z`, logit | p-value (prueba de Wald) |
+| función sigmoide | intervalo de confianza |
+| umbral de decisión | colinealidad |
+| odds ratio | significancia (¿es real o azar?) |
+
+**Ejercicio 7.** Clasifica cada uno de estos términos como parte del **modelado** o de la **validación
+estadística**: `sigmoide`, `p-value`, `odds ratio`, `intervalo de confianza`, `umbral`, `colinealidad`,
+`z (predictor lineal)`.
+
+<details>
+<summary>Ver solución explicada</summary>
+
+| Modelado | Validación estadística |
+|---|---|
+| sigmoide | p-value |
+| odds ratio | intervalo de confianza |
+| umbral | colinealidad |
+| z (predictor lineal) | |
+
+**Por qué:** sigmoide, odds ratio, umbral y `z` son piezas de **cómo el modelo calcula y comunica una
+predicción**. p-value, intervalo de confianza y colinealidad son herramientas para **auditar si ese modelo
+es confiable**: si el efecto de una variable es real (p-value, confianza) o si hay un problema que dificulta
+confiar en los coeficientes (colinealidad, cuando dos variables predictoras están muy correlacionadas entre
+sí, como `reading score` y `writing score` en este *dataset*).
+
+</details>
+
 ---
 
 ## Resumen para tu portafolio (en una frase cada uno)
@@ -277,11 +372,13 @@ categorías y convertirla en una clasificación.
    (aprueba / no aprueba), no un número continuo como la regresión lineal.
 2. **Pruebas de hipótesis en regresión logística**: el p-value de cada coeficiente (prueba de Wald) nos dice
    si su efecto sobre la probabilidad del evento es real o podría ser puro azar.
-3. **Regresión logística**: combina las variables en `z = b0 + b1*X` y pasa ese resultado por una función
-   sigmoide para obtener siempre una probabilidad entre 0 y 1.
+3. **Regresión logística**: combina las variables en `z = b0 + b1*X` (equivalente a `log(p/(1-p)) = z`, el
+   *logit*) y pasa ese resultado por una función sigmoide para obtener siempre una probabilidad entre 0 y 1.
 4. **Regresión logística y la IA**: es, en esencia, la neurona más simple posible, y la base conceptual de
    los clasificadores usados en redes neuronales.
 5. **Flujo**: explorar → plantear → ajustar (máxima verosimilitud) → evaluar coeficientes → elegir umbral y
    clasificar → evaluar desempeño (matriz de confusión, exactitud) → predecir.
 6. **Usos**: diagnóstico médico, riesgo de crédito, detección de fraude, predicción de abandono, y como base
    de clasificadores de IA más avanzados.
+7. **Modelar vs. validar**: sigmoide, umbral y odds ratio sirven para construir y usar el modelo; p-value,
+   confianza y colinealidad sirven para auditar si ese modelo es confiable.

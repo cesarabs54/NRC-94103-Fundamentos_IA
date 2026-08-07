@@ -69,7 +69,7 @@ la predicción de forma significativa, y no solo por azar.
 |---|---|---|
 | **Comparación entre modelos** | Contrastar dos o más versiones de un modelo (por ejemplo, uno que predice `writing score` solo con `reading score`, contra otro que además usa `math score`) para ver cuál explica o predice mejor. | Evita quedarnos con un modelo más complicado si no aporta una mejora real; ayuda a elegir la versión más simple que funcione igual de bien. |
 | **Pruebas de hipótesis** | Plantear H0 ("la variable no tiene efecto sobre la nota") y H1 ("sí tiene efecto"), y usar el p-value para decidir cuál apoyan los datos. | Da un criterio objetivo, basado en probabilidad, para decidir si un coeficiente o una diferencia entre modelos es real o solo azar de la muestra de 1000 estudiantes. |
-| **Validación estadística** | Revisar los supuestos del modelo (normalidad de residuos, homogeneidad de varianzas, etc.) y métricas de ajuste (R², error de predicción). | Confirma que las conclusiones del modelo (por ejemplo, "leer bien predice escribir bien") son confiables y no vienen de aplicar mal la herramienta a los datos. |
+| **Validación estadística** | Revisar los supuestos del modelo (normalidad de residuos con Shapiro-Wilk, homogeneidad de varianzas con Levene, etc.) y métricas de ajuste (R², error de predicción). | Confirma que las conclusiones del modelo (por ejemplo, "leer bien predice escribir bien") son confiables y no vienen de aplicar mal la herramienta a los datos. |
 
 **Ejercicio 2.** Al ajustar una regresión lineal simple con `reading score` para predecir `writing score`, se
 obtiene un coeficiente positivo con un valor *t* de aproximadamente 101 (y un p-value prácticamente cero).
@@ -191,6 +191,30 @@ Un flujo típico para construir y validar un modelo de regresión lineal, usando
    comporten de manera razonable (sin patrones raros, más o menos distribuidos "normal").
 7. **Predecir / interpretar**: usar el modelo para predecir la nota de escritura de un estudiante nuevo, o
    para explicar qué tanto se relacionan leer bien y escribir bien.
+
+### Ejemplo aplicado: revisar la homogeneidad de varianzas con Levene
+
+El paso 6 (revisar supuestos) suena abstracto hasta que se aplica a datos reales. Un supuesto muy común de
+comprobar es la **homogeneidad de varianzas**: que la dispersión de `Y` sea parecida entre distintos grupos
+de `X`, sobre todo cuando `X` es una variable categórica (por ejemplo, `gender`).
+
+*Situación real:* `writing score` entre hombres (n=482, media=63.31) y mujeres (n=518, media=72.47).
+
+- **H0 (Levene):** las dos varianzas son iguales — hombres y mujeres tienen una dispersión de notas
+  igualmente "pareja".
+- **H1 (Levene):** las varianzas son distintas.
+- **Resultado real:** Levene, p = 0.934.
+
+Como `0.934 > 0.05`, **no se rechaza H0**: la variabilidad de `writing score` es prácticamente igual en
+ambos grupos, aunque sus promedios sean muy distintos (72.47 vs. 63.31). Esto valida usar una prueba t
+clásica (o, de forma equivalente, una regresión lineal con `gender` como variable 0/1) para comparar esos
+promedios: al hacerlo, se obtiene `t ≈ -9.98`, `p ≈ 2×10⁻²²` — una diferencia real y muy significativa a
+favor de las mujeres.
+
+**Dato para conectar con el resto de la hoja:** comparar dos grupos con una prueba t es, matemáticamente, un
+caso particular de regresión lineal donde `X` es una variable "dummy" (0 = hombre, 1 = mujer). El
+coeficiente `b1` de esa regresión sería, justamente, la diferencia de promedios: `72.47 − 63.31 ≈ 9.16`
+puntos.
 
 **Ejercicio 5.** Ordena estos pasos como deberían ocurrir en un flujo de regresión lineal (ya están
 mezclados): "revisar el R² del modelo", "graficar `reading score` contra `writing score` para ver si la

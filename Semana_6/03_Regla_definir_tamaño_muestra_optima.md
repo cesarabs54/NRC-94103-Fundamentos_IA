@@ -1,4 +1,4 @@
-## ¿Hay alguna regla para definir el tamaño de la muestra óptima?
+## Pregunta: ¿Hay alguna regla para definir el tamaño de la muestra óptima?
 
 ## Sí — se llama "análisis de potencia" (power analysis)
 

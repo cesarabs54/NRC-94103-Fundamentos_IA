@@ -51,8 +51,14 @@ hipótesis y cuáles no? Justifica usando lo que acabas de calcular.
 `parental level of education`, y a poner a prueba tus hipótesis con ANOVA.
 
 ```python
-grupos = [g["math score"].values for _, g in df.groupby("parental level of education")]
+# ANOVA compara las medias de varios grupos (aquí, 6) en un solo test —
+# a diferencia de la prueba t, que solo compara 2 grupos a la vez.
 
+# Paso 1: separar "math score" en una lista, un grupo por cada nivel educativo.
+niveles = df.groupby("parental level of education")
+grupos = [subgrupo["math score"].values for _, subgrupo in niveles]
+
+# Paso 2: aplicar ANOVA a los 6 grupos a la vez.
 anova = stats.f_oneway(*grupos)
 print(f"ANOVA -> statistic={anova.statistic:.2f}, p-value=____")
 ```
@@ -108,8 +114,11 @@ print("Homogeneidad de varianzas:", "se cumple" if p_levene >= alpha else "NO se
 hombres = df.loc[df["gender"] == "male", "math score"]
 mujeres = df.loc[df["gender"] == "female", "math score"]
 
+# shapiro(): ¿esta muestra numérica se parece a una distribución normal?
+# H0 de Shapiro es "sí es normal" -> si p < alpha, se rechaza (es decir, NO es normal).
 sh_hombres = stats.shapiro(hombres)
 sh_mujeres = stats.shapiro(mujeres)
+# levene(): ¿estos dos grupos tienen una variabilidad (varianza) parecida?
 lev = stats.levene(hombres, mujeres)
 
 print(f"Shapiro hombres p=____, Shapiro mujeres p=____, Levene p=____")
@@ -136,9 +145,9 @@ reducido = df.loc[df["lunch"] == "free/reduced", "writing score"]
 print(f"n standard = {len(standard)}, media = ____")
 print(f"n free/reduced = {len(reducido)}, media = ____")
 
-levene_lunch = stats.levene(standard, reducido)
-t_lunch = stats.ttest_ind(standard, reducido)
-u_lunch = stats.mannwhitneyu(standard, reducido, alternative="two-sided")
+levene_lunch = stats.levene(standard, reducido)                              # supuesto: varianzas parecidas
+t_lunch = stats.ttest_ind(standard, reducido)                                # prueba t (paramétrica)
+u_lunch = stats.mannwhitneyu(standard, reducido, alternative="two-sided")    # Mann-Whitney U (no paramétrica)
 
 print(f"Levene -> p-value=____")
 print(f"t de Student -> t=____, p-value=____")
@@ -160,6 +169,8 @@ una interpretación incorrecta con una correcta.
 ```python
 none = df.loc[df["test preparation course"] == "none", "math score"]
 completado = df.loc[df["test preparation course"] == "completed", "math score"]
+# Mann-Whitney U otra vez: no exige normalidad, buena opción cuando no estamos
+# seguros de que se cumplan los supuestos (como en el Ejercicio 4).
 p_curso = stats.mannwhitneyu(none, completado, alternative="two-sided").pvalue
 
 interpretacion_incorrecta = (
@@ -181,30 +192,51 @@ print(interpretacion_correcta)
 
 ---
 
-## Ejercicio 7 — Significancia vs. tamaño del efecto (simulado)
+## Ejercicio 7 — Significancia vs. tamaño del efecto (con datos reales)
 
-*(Corresponde al Ejercicio 7 de `02_...md`.)* Compara dos "estudios" (con números dados, no de nuestro
-*dataset*) para ver cómo el tamaño de muestra afecta el p-value sin cambiar la relevancia práctica.
+*(Corresponde al Ejercicio 7 de `02_...md`.)* Vas a comparar los mismos dos grupos de `race/ethnicity`
+(`group A` y `group E`) en `math score`, dos veces: primero con una muestra pequeña (10 estudiantes por
+grupo) y luego con el grupo completo, para ver cómo el tamaño de muestra afecta el p-value aunque la
+diferencia real entre los grupos casi no cambie.
 
 ```python
-estudios = {
-    "Estudio A": {"n": 30, "diferencia": 8, "p": 0.09},
-    "Estudio B": {"n": 5000, "diferencia": 0.3, "p": 0.001},
-}
+grupo_a = df.loc[df["race/ethnicity"] == "group A", "math score"]
+grupo_e = df.loc[df["race/ethnicity"] == "group E", "math score"]
 
-for nombre, datos in estudios.items():
-    print(f"{nombre}: n={datos['n']}, diferencia={datos['diferencia']} puntos -> {decidir(datos['p'])}")
+# Muestra pequeña: solo los primeros 10 estudiantes de cada grupo
+a_chica = grupo_a.head(10)
+e_chica = grupo_e.head(10)
+t_chica = stats.ttest_ind(a_chica, e_chica)
+
+# Grupo completo (todos los estudiantes de cada grupo)
+t_completo = stats.ttest_ind(grupo_a, grupo_e)
+
+print(f"Muestra chica -> n={len(a_chica)}/{len(e_chica)}, diferencia={e_chica.mean() - a_chica.mean():.2f}, "
+      f"t=____, p=____")
+print(f"Grupo completo -> n={len(grupo_a)}/{len(grupo_e)}, diferencia={grupo_e.mean() - grupo_a.mean():.2f}, "
+      f"t=____, p=____")
+
+print(f"Decisión (muestra chica): {decidir(t_chica.pvalue)}")
+print(f"Decisión (grupo completo): {decidir(t_completo.pvalue)}")
 ```
 
-**Pregunta:** ¿en cuál estudio se rechaza H0? ¿Cuál te parece más relevante *en la práctica*, y por qué no
-coincide necesariamente con el que rechaza H0?
+**Preguntas:**
+
+a) ¿En cuál de los dos casos se rechaza H0 (con α = 0.05)?
+b) La diferencia observada es parecida en ambos casos (revisa los dos valores de `diferencia` que imprimiste).
+¿Qué cambió entre un caso y otro para que la decisión sobre H0 sea distinta? (Pista: es la misma idea que
+trabajaste en el Ejercicio 6 de `Taller_02_Estadistica_inferencial_conceptos.md`, con una submuestra de 50
+estudiantes.)
+c) Si solo tuvieras la muestra chica, ¿sería correcto concluir "no hay diferencia entre los grupos"? ¿Por qué?
 
 ---
 
 ## Ejercicio 8 — Errores tipo I y II en un caso médico
 
 *(Corresponde al Ejercicio 8 de `02_...md`.)* Este ejercicio es de razonamiento (no requiere cálculo sobre el
-*dataset*), pero vas a representarlo en código para practicar cómo se modela una decisión con incertidumbre.
+*dataset*) y usa, a propósito, un caso médico en vez de `StudentsPerformance.csv`: los errores tipo I/II se
+entienden mejor con un ejemplo de alto riesgo (decidir sobre un tratamiento) que con notas de examen. Aun así,
+vas a representarlo en código para practicar cómo se modela una decisión con incertidumbre.
 
 ```python
 situacion_real = "el tratamiento SÍ reduce la presión"       # lo que en verdad pasa (desconocido en la vida real)

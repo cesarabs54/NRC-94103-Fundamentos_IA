@@ -67,6 +67,11 @@ Recordando el documento `01`: toda prueba de hipótesis arranca con dos afirmaci
 En este documento trabajaremos siempre con pruebas de **dos colas** (no asumimos de antemano en qué dirección
 iría la diferencia), que es el caso más común y más conservador.
 
+Para comparar más de dos grupos a la vez se usa una prueba distinta a la t de Student, llamada **ANOVA**
+(*Análisis de Varianza*): en vez de comparar los grupos de dos en dos, los compara todos juntos en un solo
+test. La aplicarás con código en `Taller_03_Prueba_Hipotesis_conceptos.md`; aquí trabajemos primero las
+hipótesis.
+
 **Ejercicio 2.** Quieres investigar si el nivel educativo de los padres (`parental level of education`, que
 en el *dataset* tiene 6 categorías: *some high school, high school, some college, associate's degree,
 bachelor's degree, master's degree*) se relaciona con el puntaje de matemáticas.
@@ -272,29 +277,43 @@ observacionales, no puedo afirmar que el curso sea la causa."
 
 </details>
 
-**Ejercicio 7.** Dos estudios comparan la misma intervención:
+**Ejercicio 7.** Vas a comparar `math score` entre los grupos `group A` y `group E` de `race/ethnicity`, dos
+veces: primero con una muestra pequeña (los primeros 10 estudiantes de cada grupo), y luego con el grupo
+completo.
 
-- **Estudio A:** n = 30 por grupo, diferencia de medias = 8 puntos, *p* = 0.09.
-- **Estudio B:** n = 5000 por grupo, diferencia de medias = 0.3 puntos, *p* = 0.001.
+- **Muestra pequeña** (n = 10 por grupo): `group A` media = 57.50, `group E` media = 66.70 (diferencia =
+  9.20 puntos). Prueba t → *p* = 0.2585.
+- **Grupo completo** (`group A`: n = 89; `group E`: n = 140): `group A` media = 61.63, `group E` media =
+  73.82 (diferencia = 12.19 puntos). Prueba t → *p* = 1.08×10⁻⁸.
 
-a) ¿En cuál de los dos estudios se rechaza H0 (con α = 0.05)?
-b) ¿Cuál de los dos resultados te parece más relevante *en la práctica*? Justifica tu respuesta.
+a) ¿En cuál de los dos casos se rechaza H0 (con α = 0.05)?
+b) La diferencia observada es parecida en ambos casos (9.20 y 12.19 puntos), pero la decisión sobre H0
+cambia. ¿Qué cambió entre un caso y otro para explicar esto?
+c) Si solo tuvieras la muestra pequeña, ¿sería correcto concluir "no hay diferencia entre los grupos"?
 
 <details>
 <summary>Ver solución explicada</summary>
 
-a) Se rechaza H0 en el **Estudio B** (0.001 < 0.05); en el Estudio A no se rechaza (0.09 ≥ 0.05).
+a) Con la muestra pequeña **no se rechaza H0** (0.2585 ≥ 0.05); con el grupo completo **sí se rechaza H0**
+(1.08×10⁻⁸ < 0.05).
 
-b) A pesar de que solo el Estudio B es "estadísticamente significativo", la diferencia del **Estudio A (8
-puntos)** es probablemente más relevante en la práctica que la del Estudio B (apenas 0.3 puntos). Con una
-muestra enorme (n = 5000 por grupo), hasta una diferencia mínima y poco importante se vuelve
-"estadísticamente significativa". Este es el error "p pequeño ≠ efecto grande" en acción: el tamaño de
-muestra puede hacer significativo un efecto irrelevante, o dejar sin detectar (por falta de poder
-estadístico) un efecto grande pero real, como en el Estudio A.
+b) Lo único que cambió fue el tamaño de la muestra (n = 10 por grupo vs. n = 89 y 140); la diferencia real
+entre los grupos es parecida en los dos casos, pero con pocos datos hay demasiada incertidumbre para
+detectarla con confianza — al estudio pequeño le falta "poder estadístico". Es el error "p pequeño ≠ efecto
+grande" visto al revés: aquí un efecto real puede quedar sin detectar solo por falta de muestra, no porque
+no exista. (Misma idea que el Ejercicio 6 de `Taller_02_Estadistica_inferencial_conceptos.md`, con una
+submuestra de 50 estudiantes.)
+
+c) No. "No se rechaza H0" no equivale a "H0 es verdadera": solo significa que, con esos 10 estudiantes por
+grupo, no hubo evidencia suficiente. El resultado con el grupo completo muestra que la diferencia sí existe;
+la muestra pequeña simplemente no alcanzaba para detectarla con confianza — este es justamente el riesgo de
+un **error tipo II** (ver Ejercicio 8).
 
 </details>
 
-**Ejercicio 8.** Un hospital evalúa un tratamiento nuevo para la presión arterial. H0: el tratamiento nuevo
+**Ejercicio 8.** *(Ejemplo fuera de `StudentsPerformance.csv`, a propósito: los errores tipo I/II se
+entienden mejor con un caso de alto riesgo, como uno médico, que con notas de examen.)* Un hospital evalúa un
+tratamiento nuevo para la presión arterial. H0: el tratamiento nuevo
 no reduce la presión más que el estándar. H1: sí la reduce más.
 
 a) Describe qué significaría, en este contexto, cometer un **error tipo I**.

@@ -8,7 +8,7 @@
 
 ## Antes de empezar
 
-Este taller es 100 % práctico: vas a construir, uno por uno, los tipos de gráfico más comunes con la librería `matplotlib`, usando siempre el mismo *dataset* para que puedas comparar resultados entre ejercicios. Si necesitas repasar qué es la media, la mediana o los cuartiles antes de graficarlos, consulta [`01_Estadistica_Basica.md`](../01_%20Estadistica_basica/01_Estadistica_Basica.md), en la carpeta vecina.
+Este taller es 100 % práctico: vas a construir, uno por uno, los tipos de gráfico más comunes con la librería `matplotlib`, usando siempre el mismo *dataset* para que puedas comparar resultados entre ejercicios. Si necesitas repasar qué es la media, la mediana o los cuartiles antes de graficarlos, consulta [`01_Estadistica_basica.md`](../01_%20Estadistica_basica/01_Estadistica_Basica.md), en la carpeta vecina.
 
 **Cómo trabajar el taller:**
 
@@ -92,7 +92,7 @@ print(f"Media = ____, Mediana = ____")
 
 **Preguntas:**
 
-a) ¿La media y la mediana quedan muy cerca o muy lejos una de otra en el gráfico? ¿Qué te dice eso sobre la simetría de los datos? (Puedes repasar este concepto en la Sección 3 de `01_Estadistica_Basica.md`.)
+a) ¿La media y la mediana quedan muy cerca o muy lejos una de otra en el gráfico? ¿Qué te dice eso sobre la simetría de los datos? (Puedes repasar este concepto en la Sección 3 de `01_Estadistica_basica.md`.)
 b) Cambia `bins=20` por `bins=5` y luego por `bins=50`. ¿Qué le pasa a la forma del histograma? ¿Se pierde o se gana información al cambiar el número de *bins*?
 c) Repite el ejercicio con `reading score` en vez de `math score`. ¿La forma se parece a la de matemáticas?
 
@@ -222,5 +222,5 @@ Ya viste barras, histograma, *boxplot*, dispersión y pastel. Ahora te toca a ti
 
 ## Material relacionado
 
-Guía conceptual de estadística básica (sin código): [`01_Estadistica_Basica.md`](../01_%20Estadistica_basica/01_Estadistica_Basica.md).
+Guía conceptual de estadística básica (sin código): [`01_Estadistica_basica.md`](../01_%20Estadistica_basica/01_Estadistica_Basica.md).
 Clave de respuestas de este taller (uso docente): [`Taller_01_Visualizacion_de_datos_profesor.md`](Taller_01_Visualizacion_de_datos_profesor.md).

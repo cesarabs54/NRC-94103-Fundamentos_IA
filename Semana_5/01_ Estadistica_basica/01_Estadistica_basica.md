@@ -6,7 +6,7 @@
 
 **Dataset de ejemplo:** [`StudentsPerformance.csv`](StudentsPerformance.csv) (1000 estudiantes, con notas de matemáticas, lectura y escritura). Todos los ejemplos, ejercicios y analogías de esta guía usan **exclusivamente** este archivo, aunque el anexo del taller también permita `BostonHousing.csv` o `titles.csv`/`credits.csv` (Netflix); los mismos conceptos aplican igual si eliges trabajar con alguno de esos otros *datasets*.
 
-Este documento **no tiene código**: la parte de programación (`pandas`, `scipy`) ya la resolviste o la resolverás en el *notebook*. Aquí lo que necesitas es entender **qué significa cada resultado que el código te va a entregar**, para poder redactarlo correctamente en el portafolio.
+Este documento **no tiene código**: la parte de programación (`pandas`, `scipy`) ya la resolviste o la resolverás en el *notebook*. Aquí lo que necesitas es entender **qué significa cada resultado que el código te va a entregar**, para poder redactarlo correctamente en el portafolio. Por eso cada concepto incluye también su **fórmula matemática**: no para calcularla a mano (`pandas`/`scipy` ya lo hacen), sino para que entiendas de dónde sale cada número y puedas explicarlo con propiedad en el portafolio.
 
 ---
 
@@ -69,6 +69,30 @@ Para una variable cuantitativa, lo primero que se reporta es qué tan alto o baj
 
 Cuando la media y la mediana son casi iguales, es señal de que los datos están repartidos de forma bastante simétrica (sin un grupo extremo "descuadrando" el promedio); cuando son muy distintas, es señal de asimetría.
 
+### Fórmulas
+
+**Media:**
+
+$$
+\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n}
+$$
+
+donde $x_i$ es cada valor individual de la variable y $n$ es el número total de datos (por ejemplo, $n = 1000$ en `StudentsPerformance.csv`).
+
+**Mediana:** no se calcula sumando, sino ordenando los datos de menor a mayor y ubicando el valor central:
+
+$$
+\text{Mediana} =
+\begin{cases}
+x_{\left(\frac{n+1}{2}\right)} & \text{si } n \text{ es impar} \\[6pt]
+\dfrac{x_{\left(\frac{n}{2}\right)} + x_{\left(\frac{n}{2}+1\right)}}{2} & \text{si } n \text{ es par}
+\end{cases}
+$$
+
+donde $x_{(i)}$ es el dato que queda en la posición $i$ una vez ordenados todos los valores.
+
+**Moda:** no tiene fórmula; es, simplemente, el valor $x_i$ con mayor frecuencia (número de repeticiones) dentro del conjunto de datos.
+
 **Ejemplo aplicado.** En `math score`: la media es **66.09**, la mediana es **66.0** y la moda es **65**. Como los tres valores son casi idénticos, se puede afirmar que las notas de matemáticas están repartidas de forma bastante simétrica alrededor de 66 puntos, sin un grupo extremo que distorsione el promedio.
 
 ---
@@ -80,6 +104,44 @@ Conocer el "dato típico" no basta: dos grupos pueden tener el mismo promedio y 
 - **Rango**: la distancia entre el valor más alto y el más bajo. Da una idea rápida, pero muy sensible a un solo caso extremo.
 - **Desviación estándar**: en promedio, qué tan lejos está cada dato de la media. Un número pequeño significa que casi todos los valores son parecidos entre sí; un número grande significa que están muy repartidos.
 - **Cuartiles (Q1, Q2, Q3)**: los tres puntos de corte que dividen los datos ordenados en 4 partes iguales, de 25 % cada una. Q2 es la mediana. La distancia entre Q3 y Q1 se llama **rango intercuartílico (IQR)** y se usa para detectar valores atípicos (*outliers*): cualquier dato muy por fuera de ese rango central llama la atención y merece revisarse antes de continuar el análisis.
+
+### Fórmulas
+
+**Rango:**
+
+$$
+R = x_{\text{máx}} - x_{\text{mín}}
+$$
+
+**Varianza muestral** (el promedio de las distancias, al cuadrado, entre cada dato y la media):
+
+$$
+s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}
+$$
+
+**Desviación estándar** (la raíz cuadrada de la varianza, para volver a las unidades originales de la variable):
+
+$$
+s = \sqrt{s^2} = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n-1}}
+$$
+
+**Posición de cada cuartil** dentro de los datos ordenados (existen varios métodos equivalentes; este es el más usado):
+
+$$
+\text{Posición de } Q_k = \frac{k(n+1)}{4}, \qquad k = 1, 2, 3
+$$
+
+**IQR y límites para detectar outliers:**
+
+$$
+IQR = Q_3 - Q_1
+$$
+
+$$
+\text{Límite inferior} = Q_1 - 1.5 \times IQR \qquad \text{Límite superior} = Q_3 + 1.5 \times IQR
+$$
+
+Cualquier dato por debajo del límite inferior o por encima del límite superior se considera un posible *outlier*.
 
 **Ejemplo aplicado.** En `math score`: el rango es **100** (hay un estudiante con 0 y otro con 100); la desviación estándar es **≈15.16**, lo que indica que la mayoría de los estudiantes se ubica entre 51 y 81 puntos aproximadamente; y los cuartiles son **Q1 = 57**, **Q2 = 66**, **Q3 = 77**, de modo que un estudiante con 80 puntos queda por encima de Q3 y, por lo tanto, dentro del 25 % con mejores notas del curso.
 
@@ -124,6 +186,16 @@ El anexo sugiere tres tipos de preguntas investigables, y a cada una le correspo
 | ¿La variable X se relaciona con Y? | No existe correlación entre X y Y (la correlación real es 0) | Sí existe correlación entre X y Y |
 | ¿El promedio de X es diferente a un valor objetivo? | El promedio de X es igual al valor objetivo | El promedio de X es diferente del valor objetivo |
 
+### Notación formal
+
+| Tipo de pregunta | H0 | H1 |
+|---|---|---|
+| Diferencia entre 2 grupos | $H_0: \mu_1 = \mu_2$ | $H_1: \mu_1 \neq \mu_2$ |
+| Relación entre X y Y | $H_0: \rho = 0$ | $H_1: \rho \neq 0$ |
+| Promedio vs. valor de referencia | $H_0: \mu = \mu_0$ | $H_1: \mu \neq \mu_0$ |
+
+donde $\mu_1$ y $\mu_2$ son los promedios poblacionales de cada grupo, $\rho$ (rho) es el coeficiente de correlación poblacional, y $\mu_0$ es el valor de referencia fijo con el que se compara.
+
 El análisis siempre parte "creyendo" H0, y solo se abandona esa postura si la evidencia de los datos es lo bastante fuerte como para hacerlo (eso es justamente lo que decide el *p-value*, en la Sección 10).
 
 **Ejemplo aplicado.** Para la pregunta *"¿el curso de preparación influye en la nota de matemáticas?"*:
@@ -148,9 +220,25 @@ Esa condición se revisa con una prueba de normalidad (por ejemplo, Shapiro-Wilk
 
 La normalidad se revisa sobre la variable dependiente, ya sea en la muestra completa o dentro de cada grupo por separado, si se están comparando grupos.
 
+**Fórmula (conceptual) del estadístico de Shapiro-Wilk:**
+
+$$
+W = \frac{\left(\sum_{i=1}^{n} a_i\, x_{(i)}\right)^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
+$$
+
+donde $x_{(i)}$ son los datos ya ordenados y $a_i$ son constantes que dependen del tamaño de muestra (se calculan a partir de lo que se esperaría si los datos vinieran de una distribución normal perfecta). Cuanto más cercano a 1 es $W$, más se parece la distribución observada a una normal. No se calcula a mano: `scipy.stats.shapiro()` entrega directamente $W$ y su *p-value*.
+
 ### Homogeneidad de varianzas
 
 Cuando se comparan dos o más grupos, además de la normalidad importa que la **dispersión** (varianza) de la variable dependiente sea parecida entre esos grupos: no que unos estén muy "revueltos" y otros muy "parejos". Esto se revisa con una prueba de homogeneidad de varianzas (por ejemplo, la prueba de Levene), que también se interpreta con la misma regla del *p-value* frente a 0.05.
+
+**Fórmula del estadístico de Levene:**
+
+$$
+W = \frac{N-k}{k-1} \cdot \frac{\sum_{i=1}^{k} n_i (\bar{Z}_{i\cdot} - \bar{Z}_{\cdot\cdot})^2}{\sum_{i=1}^{k} \sum_{j=1}^{n_i} (Z_{ij} - \bar{Z}_{i\cdot})^2}
+$$
+
+donde $Z_{ij} = |x_{ij} - \tilde{x}_i|$ es la distancia absoluta de cada dato a la mediana ($\tilde{x}_i$) de su propio grupo, $k$ es el número de grupos, $N$ el total de datos y $n_i$ el tamaño de cada grupo. En esencia, Levene convierte la pregunta "¿varían igual los grupos?" en "¿tienen estas distancias a la mediana el mismo promedio en todos los grupos?", y le aplica a esas distancias la misma lógica de un ANOVA (Sección 9).
 
 **Ejemplo aplicado.** Al evaluar la normalidad de `math score` con la prueba de Shapiro-Wilk se obtiene *p* ≈ 0.00015 (menor a 0.05): en sentido estricto hay evidencia en contra de una normalidad perfecta, algo frecuente cuando la muestra es grande (con 1000 datos, la prueba detecta hasta desviaciones muy pequeñas de la campana ideal); en la práctica, la distribución sigue siendo razonablemente simétrica (Sección 3). Al comparar la varianza de `math score` entre el grupo con curso de preparación y el grupo sin curso mediante la prueba de Levene se obtiene *p* ≈ 0.47 (mayor a 0.05): no se rechaza la homogeneidad de varianzas, es decir, ambos grupos tienen una dispersión interna comparable.
 
@@ -167,7 +255,60 @@ Con el tipo de variables (Sección 1), el número de grupos a comparar y el resu
 | El promedio de X frente a un **valor de referencia fijo** | **Prueba t de una muestra** | Prueba de rangos con signo de Wilcoxon |
 | La relación entre **dos variables numéricas** | **Correlación de Pearson** | **Correlación de Spearman** |
 
-Todas estas pruebas comparten la misma lógica de fondo (calculan qué tan compatible es lo observado con H0), solo cambian según el tipo de dato y si se cumplen o no los supuestos; por eso no hace falta memorizar sus fórmulas, sino saber ubicarse en la tabla anterior.
+Todas estas pruebas comparten la misma lógica de fondo (calculan qué tan compatible es lo observado con H0), solo cambian según el tipo de dato y si se cumplen o no los supuestos; por eso no hace falta memorizar sus fórmulas de memoria para resolver el taller, pero sí ayuda saber de dónde salen para poder explicarlas en el portafolio.
+
+### Fórmulas de las pruebas más usadas en este taller
+
+**Prueba t de Student** (2 grupos independientes, varianzas homogéneas):
+
+$$
+t = \frac{\bar{x}_1 - \bar{x}_2}{s_p \sqrt{\dfrac{1}{n_1} + \dfrac{1}{n_2}}}, \qquad
+s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}}
+$$
+
+donde $\bar{x}_1, \bar{x}_2$ son las medias de cada grupo, $s_1^2, s_2^2$ sus varianzas, $n_1, n_2$ sus tamaños, y $s_p$ es la desviación estándar combinada ("*pooled*") de ambos grupos.
+
+**Prueba t de una muestra** (compara el promedio contra un valor de referencia $\mu_0$):
+
+$$
+t = \frac{\bar{x} - \mu_0}{s / \sqrt{n}}
+$$
+
+**ANOVA de un factor** (compara $k$ grupos a la vez):
+
+$$
+F = \frac{\text{MSB}}{\text{MSW}}, \qquad
+\text{MSB} = \frac{\sum_{i=1}^{k} n_i(\bar{x}_i - \bar{x})^2}{k-1}, \qquad
+\text{MSW} = \frac{\sum_{i=1}^{k} \sum_{j=1}^{n_i} (x_{ij} - \bar{x}_i)^2}{N-k}
+$$
+
+MSB ("*mean square between*") mide qué tan distintos son los promedios de los grupos entre sí; MSW ("*mean square within*") mide qué tan dispersos son los datos dentro de cada grupo. Un $F$ grande indica que las diferencias entre grupos son grandes en comparación con la variación normal dentro de cada grupo.
+
+**Correlación de Pearson:**
+
+$$
+r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}}
+$$
+
+$r$ va de −1 a 1: cerca de 1 indica relación lineal positiva fuerte (cuando sube X, sube Y), cerca de −1 indica relación lineal negativa fuerte, y cerca de 0 indica poca o ninguna relación lineal.
+
+**Versiones no paramétricas** (cuando no se cumplen los supuestos, trabajan sobre los *rangos* de los datos en lugar de sus valores exactos, por lo que no necesitan normalidad):
+
+Correlación de Spearman:
+
+$$
+r_s = 1 - \frac{6\sum_{i=1}^{n} d_i^2}{n(n^2-1)}
+$$
+
+donde $d_i$ es la diferencia entre el rango de $x_i$ y el rango de $y_i$ para cada observación.
+
+Kruskal-Wallis (equivalente no paramétrico de ANOVA), donde $R_i$ es la suma de rangos del grupo $i$, $n_i$ su tamaño y $N$ el total de datos:
+
+$$
+H = \frac{12}{N(N+1)} \sum_{i=1}^{k} \frac{R_i^2}{n_i} - 3(N+1)
+$$
+
+La U de Mann-Whitney sigue la misma idea para 2 grupos: aplica, sobre los rangos, una lógica equivalente a la de la prueba t.
 
 **Ejemplo aplicado.** Para comparar `math score` entre los 2 grupos de `test preparation course`, y habiendo verificado que la varianza es homogénea entre ambos (Sección 8), la prueba adecuada es la **prueba t de Student para muestras independientes** (aunque la normalidad estricta no se cumpla del todo, con un tamaño de muestra grande como n = 1000 esta prueba sigue siendo razonablemente confiable). Si en cambio se quisiera comparar `math score` entre los 5 grupos de `race/ethnicity`, al ser más de 2 grupos correspondería usar **ANOVA** (o **Kruskal-Wallis** si los supuestos no se cumplieran).
 
@@ -179,6 +320,14 @@ Toda prueba inferencial entrega, como mínimo, dos números:
 
 - **El estadístico de prueba** (por ejemplo, el valor *t* en una prueba t, el valor *F* en ANOVA, o el coeficiente *r* en una correlación): resume, en un solo número, qué tan grande es la diferencia o la relación observada en la muestra.
 - **El *p-value***: la probabilidad de observar una diferencia (o una relación) al menos tan grande como la que se vio en la muestra, **si H0 fuera cierta** (si en realidad no hubiera ningún efecto).
+
+En notación formal, para una prueba de dos colas (la más común en este taller):
+
+$$
+p = P\big(|T| \geq |t_{\text{obs}}| \;\big|\; H_0 \text{ verdadera}\big)
+$$
+
+donde $T$ es la variable aleatoria del estadístico de prueba bajo H0 (por ejemplo, la distribución t) y $t_{\text{obs}}$ es el valor observado en la muestra (Sección 9). Cuanto más extremo (alejado de 0) es el estadístico observado, menor es el *p-value*.
 
 La regla de decisión es la misma que en la Sección 8:
 
@@ -212,6 +361,32 @@ Es importante remarcar dos cosas al redactar la interpretación en el portafolio
 | Prueba paramétrica | Prueba que asume normalidad (y a veces homogeneidad); ej. prueba t, ANOVA |
 | Prueba no paramétrica | Alternativa que no exige normalidad; ej. Mann-Whitney, Kruskal-Wallis |
 | *p-value* | Qué tan raro sería el resultado observado si H0 fuera cierta |
+
+## Notación matemática usada en esta guía
+
+| Símbolo | Significado |
+|---|---|
+| $x_i$ | Cada valor individual de la variable |
+| $n$ | Número de datos en la muestra (o en un grupo) |
+| $N$ | Número total de datos, sumando todos los grupos |
+| $k$ | Número de grupos que se comparan |
+| $\sum$ | Sumatoria: "sumar todos los valores que siguen" |
+| $\bar{x}$ | Media muestral |
+| $\tilde{x}$ | Mediana |
+| $\mu$ | Media poblacional (el valor "real" que la muestra intenta estimar) |
+| $\mu_0$ | Valor de referencia fijo contra el que se compara un promedio |
+| $s^2$ | Varianza muestral |
+| $s$ | Desviación estándar muestral |
+| $Q_1, Q_2, Q_3$ | Primer, segundo (mediana) y tercer cuartil |
+| $IQR$ | Rango intercuartílico ($Q_3 - Q_1$) |
+| $\rho$ (rho) | Coeficiente de correlación poblacional |
+| $r$ | Coeficiente de correlación de Pearson (muestral) |
+| $r_s$ | Coeficiente de correlación de Spearman |
+| $H_0$ / $H_1$ | Hipótesis nula / hipótesis alternativa |
+| $t$, $F$, $W$ | Estadísticos de prueba (t de Student, ANOVA, Shapiro-Wilk/Levene) |
+| $p$ | *p-value*: probabilidad del resultado observado si H0 fuera cierta |
+
+Estos símbolos son los mismos que aparecen en las fórmulas de las Secciones 3, 4, 7, 8 y 9; si en algún momento una fórmula se ve confusa, conviene volver a esta tabla para identificar qué representa cada letra.
 
 ## Resumen — ¿qué uso según la pregunta?
 

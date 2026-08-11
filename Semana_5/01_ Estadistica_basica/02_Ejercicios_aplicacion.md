@@ -2,10 +2,10 @@
 
 **Curso:** Fundamentos para Inteligencia Artificial — NRC 94103
 **Semana 5:** Estadística básica y visualización de datos
-**Basado en:** [`01_Estadistica_Basica.md`](01_Estadistica_Basica.md) — guía conceptual para el Portafolio de evidencias (Semana 6, `EIARV011_A6`)
+**Basado en:** [`01_Estadistica_basica.md`](01_Estadistica_basica.md) — guía conceptual para el Portafolio de evidencias (Semana 6, `EIARV011_A6`)
 **Datos:** [`StudentsPerformance.csv`](StudentsPerformance.csv) — notas de 1000 estudiantes (matemáticas, lectura y escritura), más variables de contexto (género, tipo de almuerzo, curso de preparación, nivel educativo de los padres, grupo étnico).
 
-Este notebook desarrolla, con código Python real y ejecutado, un ejercicio práctico por cada una de las 10 secciones de `01_Estadistica_Basica.md`. La numeración de los apartados coincide con la de esa guía, para que puedas ir de la explicación conceptual al código y viceversa.
+Este notebook desarrolla, con código Python real y ejecutado, un ejercicio práctico por cada una de las 10 secciones de `01_Estadistica_basica.md`. La numeración de los apartados coincide con la de esa guía, para que puedas ir de la explicación conceptual al código y viceversa.
 
 
 ```python
@@ -195,6 +195,8 @@ print(df['race/ethnicity'].value_counts().sort_index())
 
 **Ejercicio.** Calcula la media, la mediana y la moda de las tres variables numéricas (`math score`, `reading score`, `writing score`) y compáralas en una sola tabla.
 
+**Fórmulas:** $\bar{x} = \dfrac{\sum_{i=1}^{n} x_i}{n}$ (media); la mediana es el valor central de los datos ordenados; la moda es el valor más frecuente. Ver [Sección 3 de la guía conceptual](01_Estadistica_basica.md#3-estadística-descriptiva-el-dato-típico-paso-5-del-anexo).
+
 
 ```python
 resumen_centro = pd.DataFrame({
@@ -263,12 +265,24 @@ resumen_centro
 
 **Ejercicio.** Para `math score`, calcula el rango, la desviación estándar y los cuartiles (Q1, Q2, Q3). Luego, usando la regla del rango intercuartílico (IQR), identifica cuántos estudiantes tienen una nota de matemáticas atípica (*outlier*).
 
+**Fórmulas:**
+
+$$
+R = x_{\text{máx}} - x_{\text{mín}}, \qquad
+s = \sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}}, \qquad
+IQR = Q_3 - Q_1
+$$
+
+Límites para detectar *outliers*: $Q_1 - 1.5 \times IQR$ y $Q_3 + 1.5 \times IQR$.
+
+Ver [Sección 4 de la guía conceptual](01_Estadistica_basica.md#4-estadística-descriptiva-qué-tan-parejos-son-los-datos-paso-5-del-anexo).
+
 
 ```python
 math = df['math score']
 
 rango = math.max() - math.min()
-desviacion = math.std(ddof=0)
+desviacion = math.std()  # ddof=1 por defecto: desviación estándar muestral, s = sqrt(sum((x-x̄)²)/(n-1))
 q1, q2, q3 = math.quantile([0.25, 0.5, 0.75])
 iqr = q3 - q1
 
@@ -318,7 +332,7 @@ plt.show()
 
 
     
-![png](02_Ejercicios_Aplicacion_files_profesor/output_12_0.png)
+![png](02_Ejercicios_aplicacion_files_profesor/output_12_0.png)
     
 
 
@@ -338,7 +352,7 @@ plt.show()
 
 
     
-![png](02_Ejercicios_Aplicacion_files_profesor/output_13_0.png)
+![png](02_Ejercicios_aplicacion_files_profesor/output_13_0.png)
     
 
 
@@ -355,7 +369,7 @@ plt.show()
 
 
     
-![png](02_Ejercicios_Aplicacion_files_profesor/output_14_0.png)
+![png](02_Ejercicios_aplicacion_files_profesor/output_14_0.png)
     
 
 
@@ -448,6 +462,8 @@ print("asociación estadística fuerte, pero por sí sola NO demuestra que una h
 
 **Ejercicio.** Redacta formalmente H0 y H1 para la pregunta *"¿el curso de preparación influye en la nota de matemáticas?"*, y calcula el promedio de cada grupo como primer indicio antes de aplicar la prueba formal (Secciones 8-10).
 
+**Notación formal:** $H_0: \mu_1 = \mu_2$ vs. $H_1: \mu_1 \neq \mu_2$, donde $\mu_1$ y $\mu_2$ son los promedios poblacionales de `math score` en cada grupo. Ver [Sección 7 de la guía conceptual](01_Estadistica_basica.md#7-formulación-de-hipótesis-h0-y-h1-paso-2-del-anexo).
+
 
 ```python
 H0 = "El promedio de 'math score' es igual entre los estudiantes que completaron el curso de preparación y los que no."
@@ -475,6 +491,22 @@ print(promedios_por_grupo)
 ## 8. Validación de supuestos: normalidad y homogeneidad de varianzas
 
 **Ejercicio.** Evalúa si `math score` cumple el supuesto de normalidad (prueba de Shapiro-Wilk) y si los dos grupos de `test preparation course` tienen varianzas homogéneas (prueba de Levene).
+
+**Fórmulas:**
+
+Shapiro-Wilk (cuanto más cerca de 1, más "normal" es la distribución):
+
+$$
+W = \frac{\left(\sum_{i=1}^{n} a_i\, x_{(i)}\right)^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
+$$
+
+Levene (con $Z_{ij} = |x_{ij} - \tilde{x}_i|$, la distancia de cada dato a la mediana de su grupo):
+
+$$
+W = \frac{N-k}{k-1} \cdot \frac{\sum_{i=1}^{k} n_i (\bar{Z}_{i\cdot} - \bar{Z}_{\cdot\cdot})^2}{\sum_{i=1}^{k}\sum_{j=1}^{n_i} (Z_{ij} - \bar{Z}_{i\cdot})^2}
+$$
+
+Ver [Sección 8 de la guía conceptual](01_Estadistica_basica.md#8-validación-de-supuestos-normalidad-y-homogeneidad-de-varianzas-paso-6-del-anexo).
 
 
 ```python
@@ -508,6 +540,37 @@ else:
 ## 9. Selección y ejecución de la prueba estadística inferencial
 
 **Ejercicio.** Con 2 grupos y varianzas homogéneas (Sección 8), aplica la prueba t de Student para muestras independientes sobre `math score` según `test preparation course`. Adicionalmente, aplica ANOVA para comparar `math score` entre los 5 grupos de `race/ethnicity`, y compárala con su alternativa no paramétrica (Kruskal-Wallis).
+
+**Fórmulas:**
+
+Prueba t de Student:
+
+$$
+t = \frac{\bar{x}_1 - \bar{x}_2}{s_p \sqrt{1/n_1 + 1/n_2}}, \qquad
+s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}}
+$$
+
+ANOVA de un factor:
+
+$$
+F = \frac{\text{MSB}}{\text{MSW}}
+$$
+
+(varianza entre grupos sobre varianza dentro de los grupos — ver fórmulas completas de MSB y MSW en la Sección 9 de la guía conceptual).
+
+Kruskal-Wallis (versión no paramétrica de ANOVA, sobre los rangos $R_i$ de cada grupo, con $N$ el total de datos):
+
+$$
+H = \frac{12}{N(N+1)} \sum_{i=1}^{k} \frac{R_i^2}{n_i} - 3(N+1)
+$$
+
+Correlación de Pearson:
+
+$$
+r = \frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}}
+$$
+
+Ver [Sección 9 de la guía conceptual](01_Estadistica_basica.md#9-selección-de-la-prueba-estadística-inferencial-paso-7-del-anexo).
 
 
 ```python
@@ -546,6 +609,8 @@ print(f"  r = {correlacion_r:.3f}, p-value = {p_corr:.3e}")
 ## 10. Resultados e interpretación: estadístico, p-value y decisión sobre H0
 
 **Ejercicio.** Escribe una función que, dado un *p-value* y un nivel de significancia (alfa = 0.05), devuelva en texto la decisión sobre H0. Aplícala a los cuatro resultados de la Sección 9 y redacta la conclusión final para el portafolio.
+
+**Fórmula:** $p = P\big(|T| \geq |t_{\text{obs}}| \mid H_0 \text{ verdadera}\big)$ para una prueba de dos colas. Ver [Sección 10 de la guía conceptual](01_Estadistica_basica.md#10-resultados-e-interpretación-el-estadístico-de-prueba-y-el-p-value-paso-8-del-anexo).
 
 
 ```python
@@ -594,4 +659,4 @@ print("alta. Esta asociación estadística no implica, por sí sola, una relaci�
 
 ### Cierre
 
-Cada sección de este notebook reproduce, con código real, el mismo recorrido conceptual de `01_Estadistica_Basica.md`: clasificar variables, describir la muestra, resumir con medidas de tendencia central y dispersión, visualizar, plantear hipótesis, validar supuestos, elegir la prueba correcta y, finalmente, interpretar el resultado en función de H0. Este mismo flujo es el que debes reproducir con el *dataset* que elijas para el Portafolio de evidencias (`EIARV011_A6`, Semana 6).
+Cada sección de este notebook reproduce, con código real, el mismo recorrido conceptual de `01_Estadistica_basica.md`: clasificar variables, describir la muestra, resumir con medidas de tendencia central y dispersión, visualizar, plantear hipótesis, validar supuestos, elegir la prueba correcta y, finalmente, interpretar el resultado en función de H0. Este mismo flujo es el que debes reproducir con el *dataset* que elijas para el Portafolio de evidencias (`EIARV011_A6`, Semana 6).

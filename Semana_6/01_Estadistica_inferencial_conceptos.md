@@ -12,6 +12,17 @@ Ahora imagina que, con esos datos de tu salón, quieres adivinar cuántos dulces
 
 En nuestra actividad: contamos las notas de 1000 estudiantes (descriptiva) para tratar de entender qué pasa con **todos** los estudiantes que presentan ese examen (inferencial).
 
+**La fórmula, por si la quieres ver:**
+
+> x̄ = (x₁ + x₂ + ... + xₙ) / n
+>
+> - x̄ ("x barra") = el promedio
+> - x₁, x₂, ..., xₙ = cada uno de los valores de la muestra
+> - n = cuántos valores hay
+>
+> En palabras: sumas todos los valores y divides entre cuántos son. Es justo lo que hace
+> `df["math score"].mean()` en Python — ahora ya sabes qué calcula por dentro.
+
 **Ejercicio 1.** En `StudentsPerformance.csv`, 642 estudiantes no tomaron el curso de preparación (promedio de matemáticas = 64.08) y 358 sí lo tomaron (promedio = 69.70).
 
 a) La frase *"el promedio de matemáticas del grupo que sí tomó el curso es 69.70"* ¿es descriptiva o inferencial?
@@ -65,6 +76,19 @@ la población.
 
 </details>
 
+**La fórmula detrás del inciso c):**
+
+> SE = s / √n
+>
+> - SE (*error estándar*) = qué tan lejos esperamos, en promedio, que esté el promedio de nuestra muestra
+>   del promedio real de la población
+> - s = desviación estándar de la muestra (qué tan "revueltos" están los datos)
+> - n = tamaño de la muestra
+>
+> Fíjate que n está dividiendo dentro de una raíz: mientras más grande el grupo, más chico se vuelve SE — es
+> decir, más confiable es el promedio. Por eso el grupo de 226 estudiantes (`some college`) da un promedio
+> más confiable que el de solo 59 (`master's degree`).
+
 ## 3. Variables: la que "causa" y la que "se mide"
 
 En nuestros datos hay cosas que se miden (los puntajes) y cosas que podrían explicar por qué el puntaje sube o baja (por ejemplo, si el estudiante tomó o no un curso de preparación).
@@ -73,6 +97,17 @@ En nuestros datos hay cosas que se miden (los puntajes) y cosas que podrían exp
 - **Variable independiente**: si tomó el curso de preparación (`test preparation course`). Es la que podría estar influyendo.
 
 Piénsalo como plantas: si riegas una planta y no riegas otra, "regar o no regar" es la variable independiente, y "qué tan alto creció" es la variable dependiente.
+
+**La fórmula para el caso b) (dos variables numéricas, sin dependiente/independiente fija):**
+
+> r = Σ(xᵢ - x̄)(yᵢ - ȳ) / √[Σ(xᵢ - x̄)² · Σ(yᵢ - ȳ)²]
+>
+> - r = coeficiente de correlación (siempre entre -1 y 1)
+> - x̄, ȳ = el promedio de cada una de las dos variables
+>
+> No necesitas calcularla a mano: `df["reading score"].corr(df["writing score"])` la hace por ti. La idea es
+> simple: r cerca de 1 (o de -1) significa que las dos variables se mueven muy juntas; r cerca de 0 significa
+> que casi no hay relación entre ellas.
 
 **Ejercicio 3.** Para cada pregunta de investigación con el *dataset*, identifica la variable dependiente y
 la independiente:
@@ -102,6 +137,14 @@ Una **hipótesis** es simplemente una idea que queremos comprobar con datos, ant
 
 Con los datos, buscamos evidencia para decidir cuál de las dos apuestas gana.
 
+**En notación formal**, para cuando compares dos promedios (como en el Ejercicio 4):
+
+> H0: μ₁ = μ₂
+> H1: μ₁ ≠ μ₂
+>
+> μ ("mu") representa el promedio de **toda la población** (no el de la muestra, que se escribe x̄) de cada
+> grupo. H0 dice que esos dos promedios poblacionales son iguales; H1 dice que son distintos.
+
 **Ejercicio 4.** Plantea H0 y H1 (en palabras, como una apuesta) para esta pregunta: *"¿el tipo de almuerzo
 (`lunch`: `standard` vs. `free/reduced`) se relaciona con el puntaje de escritura (`writing score`)?"*
 
@@ -127,6 +170,14 @@ El **p-value** es un número que te dice qué tan raro (o normal) sería el resu
 - Si el p-value es **grande** (0.05 o más), es como decir: "esto podría pasar fácilmente por azar, no es tan raro" → entonces **no rechazamos H0** (no hay evidencia suficiente de diferencia).
 
 El número 0.05 es como la regla del juego que usamos siempre: "si la probabilidad de que sea pura casualidad es menor al 5%, le creemos a H1".
+
+**En notación formal:**
+
+> p = P(dato tan extremo o más extremo que el observado | H0 es verdadera)
+>
+> Se lee: "la probabilidad de los datos, suponiendo que H0 es cierta". Es una probabilidad *condicional*: no
+> es la probabilidad de que H0 sea verdadera, sino la probabilidad de los datos *si* H0 lo fuera — dos cosas
+> muy distintas.
 
 **Ejercicio 5.** Al comparar el puntaje de matemáticas entre estudiantes con curso de preparación y sin él,
 se obtiene un p-value de 0.00000008 (casi cero).
@@ -156,6 +207,15 @@ Imagina la alarma contra incendios de tu casa:
 - **Error tipo II** (no darte cuenta): hay un incendio de verdad, pero la alarma NO suena. Aquí sería: decir "no hay diferencia" cuando en realidad SÍ la hay.
 
 Nadie puede evitar los dos errores al 100% al mismo tiempo, pero mientras más datos tengamos (como nuestros 1000 estudiantes), menos probable es que nos equivoquemos sin darnos cuenta (error tipo II).
+
+**Las probabilidades detrás de cada error:**
+
+> α = P(rechazar H0 | H0 es verdadera) → probabilidad de error tipo I (por convención, α = 0.05)
+> β = P(no rechazar H0 | H0 es falsa) → probabilidad de error tipo II
+> Poder estadístico = 1 − β → probabilidad de detectar un efecto real cuando sí existe
+>
+> Cuantos más datos tengas, más chico se vuelve β (y más grande el poder estadístico) — por eso, con 1000
+> estudiantes, es más difícil que un efecto real se nos escape sin darnos cuenta.
 
 **Ejercicio 6.** Imagina que, por pura casualidad en la muestra, concluimos que *"el curso de preparación SÍ
 mejora la nota"* cuando en realidad, en toda la población de estudiantes del mundo, el curso no tiene ningún
@@ -188,6 +248,15 @@ También revisamos si los grupos que comparamos tienen una variedad parecida (qu
 
 Estas revisiones son como probar el agua con el dedo antes de meterte a la piscina: te dicen qué herramienta (prueba estadística) es segura usar después.
 
+**La fórmula de la variabilidad (la misma s de la Sección 2):**
+
+> s² = Σ(xᵢ - x̄)² / (n - 1)      s = √s²
+>
+> s² es la **varianza** (qué tan "revueltos" están los datos); su raíz cuadrada, s, es la **desviación
+> estándar** — la misma que aparece en la fórmula del error estándar (Sección 2). Cuando decimos que dos
+> grupos tienen "una variabilidad parecida" (homogeneidad de varianzas), estamos comparando este número
+> entre los grupos.
+
 **Ejercicio 7.** Si separas las notas de matemáticas en dos grupos (con curso de preparación y sin curso) y
 calculas cuánto varían las notas dentro de cada uno, obtienes una variabilidad parecida en los dos grupos
 (ambos con una desviación estándar de aproximadamente 14 a 15 puntos).
@@ -215,6 +284,16 @@ Según lo que encontremos al "probar el agua":
 - Si los datos NO se comportan "normal" → usamos herramientas **no paramétricas** (como Mann-Whitney U o Kruskal-Wallis), que funcionan igual de bien sin necesitar esa forma de campana.
 
 No te preocupes por memorizar estos nombres: lo importante es la idea — hay una herramienta para cuando los datos se comportan "normal" y otra para cuando no, y las dos te ayudan a responder la misma pregunta.
+
+**Las fórmulas de las dos herramientas paramétricas:**
+
+> Prueba t (2 grupos):  t = (x̄₁ - x̄₂) / SE
+>
+> ANOVA (3+ grupos):  F = MSB / MSW
+>
+> En los dos casos la idea es la misma: arriba va "qué tan separados están los grupos", abajo va "cuánta
+> variabilidad esperaríamos de todos modos, solo por azar". Un t o una F grandes (comparados con lo que el
+> azar produciría) llevan a un p-value chiquito.
 
 **Ejercicio 8.** La columna `race/ethnicity` del *dataset* tiene 5 grupos (A a E), con tamaños entre 89 y
 319 estudiantes, y promedios de matemáticas que van de 61.63 (grupo A) hasta 73.82 (grupo E).
@@ -251,3 +330,21 @@ entre, al menos, algunos de los grupos.)
 6. **Error tipo I**: falsa alarma. **Error tipo II**: no darme cuenta de algo real.
 7. **Supuestos**: reviso cómo se comportan los datos antes de elegir la herramienta.
 8. **Prueba**: paramétrica si los datos son "normales"; no paramétrica si no lo son.
+
+## Fórmulas de referencia rápida
+
+| Concepto | Fórmula | Sección |
+|---|---|---|
+| Promedio (media) | x̄ = Σxᵢ / n | 1 |
+| Error estándar | SE = s / √n | 2 |
+| Varianza / desviación estándar | s² = Σ(xᵢ - x̄)² / (n - 1) ; s = √s² | 7 |
+| Correlación | r = Σ(xᵢ-x̄)(yᵢ-ȳ) / √[Σ(xᵢ-x̄)² · Σ(yᵢ-ȳ)²] | 3 |
+| Hipótesis (2 grupos) | H0: μ₁ = μ₂ ; H1: μ₁ ≠ μ₂ | 4 |
+| p-value | p = P(datos \| H0 verdadera) | 5 |
+| Errores tipo I / II | α = P(rechazar H0 \| H0 verdadera) ; β = P(no rechazar H0 \| H0 falsa) | 6 |
+| Prueba t (2 grupos) | t = (x̄₁ - x̄₂) / SE | 8 |
+| ANOVA (3+ grupos) | F = MSB / MSW | 8 |
+
+No necesitas memorizar estas fórmulas para hacer la actividad — `pandas` y `scipy.stats` las calculan por
+ti (lo verás en `Taller_03_Prueba_Hipotesis_conceptos.md`). Están aquí para que, cuando el código te dé un
+número, sepas de dónde sale.

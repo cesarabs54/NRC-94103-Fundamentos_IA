@@ -61,6 +61,15 @@ En regresión lineal, cada variable tiene asociado un **p-value**: nos dice qué
 la relación que vemos en los datos si, en realidad, esa variable no influyera en nada. Si el p-value es menor
 a 0.05, rechazamos H0 y decimos que la variable sí aporta información útil al modelo.
 
+Ese p-value sale de un **estadístico *t*** para el coeficiente, que compara qué tan grande es `b1` frente a
+su propio margen de error (el **error estándar**, $SE(b_1)$):
+
+$$t = \frac{b_1 - 0}{SE(b_1)}$$
+
+Es la misma lógica de la prueba *t* que ya conoces de la Semana 6: mientras más grande sea $|t|$ (es decir,
+mientras más "lejos de cero", en unidades de error estándar, esté el coeficiente), más pequeño es el p-value
+y más confiados podemos estar de que `b1` no es cero por puro azar.
+
 También comparamos modelos completos entre sí: por ejemplo, un modelo que predice `writing score` solo con
 `reading score`, contra uno que además incluye `math score`, para ver si agregar esa segunda variable mejora
 la predicción de forma significativa, y no solo por azar.
@@ -105,12 +114,28 @@ otro.
 
 La idea es una ecuación como esta:
 
-```
-Y = b0 + b1 * X
-```
+$$Y = b_0 + b_1 X$$
 
 - `b0` (intercepto): el valor de `Y` cuando `X` vale cero.
 - `b1` (pendiente): cuánto sube o baja `Y` por cada unidad que sube `X`.
+
+### ¿De dónde salen `b0` y `b1`? Mínimos cuadrados
+
+La recta "buena" no se adivina: es la que minimiza la suma de los errores al cuadrado entre lo que predice
+el modelo ($\hat{y}_i$) y el valor real ($y_i$) de cada estudiante:
+
+$$SS_{res} = \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$$
+
+La pendiente y el intercepto que logran ese mínimo tienen una fórmula directa (por eso se llama **regresión
+por mínimos cuadrados**, *least squares*):
+
+$$b_1 = \frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sum_{i=1}^{n}(x_i-\bar{x})^2} = \frac{S_{xy}}{S_{xx}}
+\qquad\qquad
+b_0 = \bar{y} - b_1 \bar{x}$$
+
+Con `reading score` como `x` y `writing score` como `y`, esas fórmulas dan justamente `b1 = 0.9935` y
+`b0 = -0.6676` (los valores redondeados que usamos en el Ejercicio 3). El numerador de `b1` mide cuánto se
+mueven juntas las dos variables; el denominador mide cuánto varía por sí sola `reading score`.
 
 Sirve para dos cosas principales:
 
@@ -187,6 +212,19 @@ Un flujo típico para construir y validar un modelo de regresión lineal, usando
    su efecto es estadísticamente significativo.
 5. **Evaluar el ajuste global**: revisar métricas como el **R²** (qué tanto de la variación de `writing
    score` explica el modelo, de 0 a 1; en este caso, alrededor de 0.91) y el error de predicción.
+
+   El **R²** compara el error que comete el modelo ($SS_{res}$, la misma suma de errores al cuadrado de
+   arriba) contra el error que se cometería si simplemente predijéramos siempre el promedio de `Y`
+   ($SS_{tot}$):
+
+   $$R^2 = 1 - \frac{SS_{res}}{SS_{tot}} = 1 - \frac{\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}{\sum_{i=1}^{n}(y_i-\bar{y})^2}$$
+
+   Un $R^2 = 0.91$ significa que el modelo explica el 91 % de la variación de `writing score`; el 9 %
+   restante es error que el modelo no captura. Ese mismo error se resume, en la escala original de las
+   notas, con el **error estándar de los residuos** (qué tan lejos, en promedio, cae la predicción de la
+   nota real):
+
+   $$RMSE = \sqrt{\frac{SS_{res}}{n}} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}$$
 6. **Revisar supuestos**: verificar que los residuos (diferencias entre la nota real y la predicha) se
    comporten de manera razonable (sin patrones raros, más o menos distribuidos "normal").
 7. **Predecir / interpretar**: usar el modelo para predecir la nota de escritura de un estudiante nuevo, o
@@ -212,9 +250,22 @@ promedios: al hacerlo, se obtiene `t ≈ -9.98`, `p ≈ 2×10⁻²²` — una di
 favor de las mujeres.
 
 **Dato para conectar con el resto de la hoja:** comparar dos grupos con una prueba t es, matemáticamente, un
-caso particular de regresión lineal donde `X` es una variable "dummy" (0 = hombre, 1 = mujer). El
-coeficiente `b1` de esa regresión sería, justamente, la diferencia de promedios: `72.47 − 63.31 ≈ 9.16`
-puntos.
+caso particular de regresión lineal donde `X` es una variable "dummy" (0 = hombre, 1 = mujer):
+
+$$\text{writing score} = b_0 + b_1 \times \text{gender}_{\text{(1 = mujer)}}$$
+
+El coeficiente `b1` de esa regresión es, justamente, la diferencia de promedios entre grupos:
+
+$$b_1 = \bar{y}_{\text{mujeres}} - \bar{y}_{\text{hombres}} = 72.47 - 63.31 \approx 9.16 \text{ puntos}$$
+
+Y el estadístico de la prueba t que compara ambos promedios se calcula así (versión con varianzas iguales,
+válida aquí porque Levene no rechazó H0):
+
+$$t = \frac{\bar{y}_{\text{mujeres}} - \bar{y}_{\text{hombres}}}{SE(\bar{y}_{\text{mujeres}} - \bar{y}_{\text{hombres}})} \approx -9.98$$
+
+Es exactamente el mismo número (con el signo cambiado según qué grupo se reste primero) que arrojaría el
+p-value del coeficiente `b1` en la regresión con la variable dummy: dos formas distintas de hacer la misma
+pregunta.
 
 **Ejercicio 5.** Ordena estos pasos como deberían ocurrir en un flujo de regresión lineal (ya están
 mezclados): "revisar el R² del modelo", "graficar `reading score` contra `writing score` para ver si la

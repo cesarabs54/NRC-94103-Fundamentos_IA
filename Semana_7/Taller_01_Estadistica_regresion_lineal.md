@@ -1,4 +1,4 @@
-# Taller: Fundamentos de Estadística para Regresión Lineal (a mano, sin código)
+# Taller: Fundamentos de Estadística para Regresión Lineal
 
 **Fundamentos para IA · NRC 94103 · Semana 7**
 

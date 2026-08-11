@@ -26,6 +26,13 @@ determinación (R²), y reconocer los riesgos de extrapolar.
 hombres (n = 482, media = 63.31), mujeres (n = 518, media = 72.47). Prueba de Levene: p = 0.934. Prueba t:
 t = -9.98, p = 2.02×10⁻²².
 
+**Fórmula (repaso de la prueba t, Semana 6):**
+
+> t = (x̄₁ − x̄₂) / √(sp²(1/n₁ + 1/n₂))     con     sp² = [(n₁−1)s₁² + (n₂−1)s₂²] / (n₁+n₂−2)
+>
+> Arriba va la diferencia de medias; abajo, el error estándar combinado de los dos grupos. (La fórmula
+> completa de Levene está en `02_Pruebas_Hipotesis_conceptos.md`.)
+
 **Preguntas:**
 
     a) Escribe H0 y H1 para esta comparación.
@@ -44,6 +51,14 @@ En una prueba de hipótesis sobre una correlación, las hipótesis se escriben a
 
     - H0: ρ = 0 (no existe correlación real entre las dos variables en la población)
     - H1: ρ ≠ 0 (sí existe correlación real)
+
+**La fórmula para poner a prueba una correlación:**
+
+> t = r × √(n − 2) / √(1 − r²)     con     df = n − 2
+>
+> Este estadístico t se compara igual que el de la prueba t clásica: entre más grande (en valor absoluto),
+> más chico el p-value. Con r = 0.818 y n = 1000: t = 0.818 × √998 / √(1 − 0.818²) ≈ **44.9** — un valor
+> enorme, coherente con un p-value prácticamente cero.
 
 **Preguntas:**
 
@@ -77,6 +92,17 @@ a predecir), se ajusta una recta de regresión:
 
 **writing score = -0.6676 + 0.9935 × reading score**
 
+**Cómo se calculan la pendiente y el intercepto:**
+
+> pendiente (b₁) = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)²
+> intercepto (b₀) = ȳ − b₁ × x̄
+>
+> La pendiente es, en el fondo, la misma covarianza que usa la correlación (r), pero reescalada según la
+> variabilidad de cada variable — por eso pendiente y r casi siempre tienen el mismo signo, aunque no sean el
+> mismo número (ver Ejercicio 3c). Con los 1000 estudiantes, usando `reading score` como x y `writing score`
+> como y, esta fórmula da exactamente b₁ = 0.9935 y b₀ = -0.6676 — los mismos números de la ecuación de
+> arriba.
+
 **Preguntas:**
 
 a) ¿Qué representa el número **0.9935** (la pendiente)? Redacta su interpretación en una frase, en términos
@@ -90,6 +116,17 @@ c) Usa la fórmula para predecir el `writing score` de un estudiante con `readin
 ## Ejercicio 5 — Leer el coeficiente de determinación (R²)
 
 *Situación:* para el mismo modelo del Ejercicio 4, R² = 0.911 (91.1%).
+
+**La fórmula de R²:**
+
+> R² = 1 − (SSres / SStot)
+>
+> - SSres = Σ(yᵢ − ŷᵢ)² → qué tan lejos quedan los datos reales de lo que predice la recta
+> - SStot = Σ(yᵢ − ȳ)² → qué tan lejos quedan los datos reales de su propio promedio (sin usar el modelo)
+>
+> **Caso especial:** en una regresión lineal simple (una sola variable predictora, como aquí), R² es
+> exactamente el cuadrado del coeficiente de correlación: **R² = r²**. Compruébalo: en el Ejercicio 3,
+> r = 0.955 entre `reading score` y `writing score` → r² = 0.955² ≈ 0.911 — el mismo R² de este ejercicio.
 
 **Preguntas:**
 

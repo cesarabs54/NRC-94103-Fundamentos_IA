@@ -94,6 +94,20 @@ queda fuera del alcance de este documento.)
 
 </details>
 
+**La fórmula de ANOVA (la aplicarás con código en el taller):**
+
+> F = MSB / MSW = [SSB / (k−1)] / [SSW / (N−k)]
+>
+> - SSB (*suma de cuadrados entre grupos*) = Σ nᵢ(x̄ᵢ − x̄)² → qué tan separadas están las medias de los
+>   grupos entre sí
+> - SSW (*suma de cuadrados dentro de los grupos*) = ΣΣ(xᵢⱼ − x̄ᵢ)² → qué tan dispersos son los datos
+>   dentro de cada grupo
+> - k = número de grupos; N = tamaño total de la muestra
+>
+> Con los 6 niveles educativos: SSB ≈ 7295.6, SSW ≈ 222393.5, dfB = k−1 = 5, dfW = N−k = 994 → **F = 6.52**
+> (el mismo *p* = 5.59×10⁻⁶ del Ejercicio 2). Un F grande significa que la variabilidad *entre* grupos supera
+> bastante a la variabilidad *dentro* de cada grupo — señal de que sí hay diferencias reales.
+
 ---
 
 ## 3. Nivel de significancia (α) y valor p
@@ -110,6 +124,14 @@ queda fuera del alcance de este documento.)
 |---|---|---|
 | p-value < α | Se rechaza H0 | Evidencia estadísticamente significativa a favor de H1 |
 | p-value ≥ α | No se rechaza H0 | No hay evidencia suficiente para descartar H0 |
+
+**La idea detrás de cualquier estadístico de prueba:**
+
+> estadístico = (diferencia observada − diferencia esperada bajo H0) / error estándar de la diferencia
+>
+> Todas las pruebas que verás en este documento (t, F, U) siguen esta misma lógica; solo cambia cómo se
+> calcula el "error estándar de la diferencia" en cada caso. Entre más grande el estadístico (en valor
+> absoluto), más raro sería el resultado si H0 fuera cierta — y más chico el p-value.
 
 **Ejercicio 3.** Aplicaste una prueba y obtuviste *p*-value = 0.023, con α = 0.05.
 
@@ -145,6 +167,17 @@ P(H0 | datos). Son cantidades diferentes y no se pueden intercambiar (es el mism
 6. **Comparar el p-value con α** y tomar la decisión sobre H0.
 7. **Traducir el resultado a lenguaje natural**, conectado con la pregunta original — un número solo no le
    sirve a nadie.
+
+**La fórmula de Levene (paso 4, homogeneidad de varianzas):**
+
+> Zᵢⱼ = |xᵢⱼ − medianaᵢ|
+>
+> W = [(N−k)/(k−1)] × [Σ nᵢ(Z̄ᵢ − Z̄)²] / [ΣΣ(Zᵢⱼ − Z̄ᵢ)²]
+>
+> La idea: primero mides qué tan lejos está cada dato de la mediana de su propio grupo (Zᵢⱼ); si esas
+> distancias son parecidas entre grupos, las varianzas son homogéneas. (La prueba de Shapiro-Wilk, para
+> normalidad, tiene una fórmula más compleja que no se calcula a mano — siempre se deja a
+> `scipy.stats.shapiro()`.)
 
 **Ejercicio 4.** (Caso hipotético, con fines de práctica.) Estás en el paso 4: comparas dos grupos
 independientes en una variable numérica y obtienes estos resultados: Shapiro-Wilk grupo A → *p* = 0.002;
@@ -203,6 +236,16 @@ verificación, en vez de descartar la prueba t por completo.
 **Paso 5 — Aplicar la prueba t** de Student: t = 5.3832, df = 998, *p*-value = 9.12×10⁻⁸. Como verificación,
 Mann-Whitney U: *p*-value = 4.28×10⁻⁷ (misma conclusión).
 
+**¿De dónde sale ese t = 5.38?** La fórmula, para 2 grupos independientes, es:
+
+> sp² = [(n₁−1)s₁² + (n₂−1)s₂²] / (n₁+n₂−2)      (varianza combinada de los dos grupos)
+> SE = √(sp² × (1/n₁ + 1/n₂))
+> t = (x̄₁ − x̄₂) / SE
+
+Con los números de la tabla del Paso 3 (n₁=482, x̄₁=68.73, s₁=14.36; n₂=518, x̄₂=63.63, s₂=15.49): sp² ≈
+223.68, SE ≈ 0.947, t ≈ (68.73−63.63)/0.947 ≈ 5.39 — muy cerca del 5.3832 que da `scipy.stats.ttest_ind`
+con los datos exactos (la pequeña diferencia es solo por el redondeo de la tabla).
+
 **Paso 6 — Decisión.** p-value ≪ α (0.05) en ambas pruebas → **se rechaza H0**.
 
 **Paso 7 — Interpretación.** Hay evidencia estadísticamente muy fuerte de que el puntaje promedio de
@@ -253,6 +296,18 @@ socioeconómicas de fondo — y no prueba que el tipo de almuerzo *cause* direct
 - **"Pescar" resultados (*p-hacking*).** Probar muchas combinaciones de variables hasta encontrar una con
   *p* < 0.05, y reportar solo esa, es engañoso: con suficientes intentos, algo "dará significativo" por puro
   azar.
+
+**La fórmula de Cohen's d (tamaño del efecto):**
+
+> d = (x̄₁ − x̄₂) / sp
+>
+> Usa la misma varianza combinada (sp, de la fórmula de la prueba t) para expresar la diferencia en
+> "unidades de desviación estándar". A diferencia del p-value, d no depende del tamaño de la muestra. Por
+> convención: d ≈ 0.2 es un efecto chico, 0.5 mediano, 0.8 grande.
+>
+> Para `math score` según `gender`: d ≈ 0.34 (efecto chico-a-mediano) — a pesar de que el p-value fue
+> astronómicamente chiquito (9.12×10⁻⁸). Ahí está, en números, el punto de "p pequeño ≠ efecto grande": la
+> significancia estadística y el tamaño real del efecto son dos preguntas distintas.
 
 **Ejercicio 6.** Un compañero concluye: *"Obtuve un p-value de 0.001, así que estoy 99.9% seguro de que el
 curso de preparación causa la mejora en la nota."*
@@ -352,6 +407,20 @@ respuesta con el contexto, no memorizar cuál error es "siempre peor".
 | Supuestos | Normalidad (Shapiro-Wilk) y homogeneidad de varianzas (Levene) antes de elegir la prueba |
 | t de Student / Mann-Whitney U | Comparar 2 grupos (paramétrica / no paramétrica) |
 | Interpretación | Traducir el resultado a la pregunta original, distinguiendo asociación de causalidad |
+
+## Fórmulas de referencia rápida
+
+| Concepto | Fórmula |
+|---|---|
+| ANOVA | F = MSB/MSW = [SSB/(k−1)] / [SSW/(N−k)] |
+| Estadístico de prueba (general) | (diferencia observada − diferencia esperada bajo H0) / error estándar |
+| Levene (homogeneidad de varianzas) | W = [(N−k)/(k−1)] × Σnᵢ(Z̄ᵢ−Z̄)² / ΣΣ(Zᵢⱼ−Z̄ᵢ)², con Zᵢⱼ = \|xᵢⱼ−medianaᵢ\| |
+| Prueba t de Student (2 grupos) | t = (x̄₁−x̄₂) / √(sp²(1/n₁+1/n₂)) |
+| Cohen's d (tamaño del efecto) | d = (x̄₁−x̄₂) / sp |
+
+Estas son las mismas fórmulas que `scipy.stats` calcula por ti en
+[`Taller_03_Prueba_Hipotesis_conceptos.md`](Taller_03_Prueba_Hipotesis_conceptos.md) (y que ves
+implementadas paso a paso en el *notebook* del profesor).
 
 **Material relacionado en esta carpeta:** presentación [`02_Prueba_Hipotesis.pptx`](02_Prueba_Hipotesis_conceptos.pptx),
 taller [`Taller_02_Prueba_Hipotesis.md`](Taller_03_Prueba_Hipotesis_conceptos.md) (con código en Python y su clave de

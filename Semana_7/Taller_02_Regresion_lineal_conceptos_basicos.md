@@ -56,6 +56,13 @@ hacia una conclusión **inferencial** sobre esa relación?
 *(Corresponde a la sección 2 de `01_...md`.)* Vas a ajustar una regresión lineal simple y poner a prueba si
 `reading score` realmente se relaciona con `writing score`, o si podría ser puro azar.
 
+**Fórmula que vas a calcular con código** (el estadístico *t* del coeficiente):
+
+$$t = \frac{b_1 - 0}{SE(b_1)}$$
+
+`resultado.slope` es `b1` y `resultado.stderr` es $SE(b_1)$; `stats.linregress` ya calcula el p-value
+asociado a ese *t*, pero el `____` del código te pide sacarlo tú de `resultado`.
+
 ```python
 x = df["reading score"]
 y = df["writing score"]
@@ -80,6 +87,13 @@ pregunta original.
 
 *(Corresponde a la sección 3 de `01_...md`.)* Con los coeficientes del Ejercicio 2, vas a interpretar la
 ecuación `writing score = b0 + b1 * reading score` y usarla para predecir.
+
+**Fórmula que estás usando:**
+
+$$\hat{y} = b_0 + b_1 x$$
+
+Es la misma recta de mínimos cuadrados ($b_1 = S_{xy}/S_{xx}$, $b_0 = \bar{y} - b_1\bar{x}$) que
+`scipy.stats.linregress` calcula por dentro; aquí solo estás evaluando esa recta en `x = 80` y `x = 50`.
 
 ```python
 b0 = resultado.intercept
@@ -109,6 +123,13 @@ este caso? ¿Por qué?
 `math score` al modelo y ver si esa segunda variable aporta algo, igual que un sistema que combina varias
 señales con distintos pesos.
 
+**Fórmula que vas a ajustar** (la misma idea de antes, con una pendiente extra por cada variable):
+
+$$\hat{y} = b_0 + b_1 x_1 + b_2 x_2$$
+
+donde $x_1$ = `reading score`, $x_2$ = `math score`. `sm.OLS(y, X).fit()` es simplemente la versión de
+`statsmodels` que resuelve esta ecuación con dos pendientes en vez de una.
+
 ```python
 X = df[["reading score", "math score"]]
 X = sm.add_constant(X)
@@ -131,6 +152,12 @@ Justifica con la forma de la ecuación.
 
 *(Corresponde a la sección 5 de `01_...md`.)* Vas a recorrer, en código, los 7 pasos del flujo: explorar,
 plantear, ajustar, evaluar coeficientes, evaluar ajuste global, revisar supuestos y predecir.
+
+**Fórmula del R²** que calcula `resultado.rvalue ** 2` (paso 5):
+
+$$R^2 = 1 - \frac{SS_{res}}{SS_{tot}} = 1 - \frac{\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}{\sum_{i=1}^{n}(y_i-\bar{y})^2}$$
+
+Y el mismo $SS_{res}$ es la base de los `residuos` que calculas en el paso 6, antes de pasarlos por Shapiro-Wilk.
 
 ```python
 # 1. Explorar -> ya lo hiciste en el Ejercicio 1
@@ -200,6 +227,16 @@ usarías un modelo de clasificación en su lugar.
 *(Corresponde al "Ejemplo aplicado" de la sección 5 de `01_...md`.)* Vas a comprobar con código el ejemplo
 de `writing score` entre hombres y mujeres, y a verificar que comparar dos grupos con una prueba t es lo
 mismo que ajustar una regresión lineal con una variable *dummy*.
+
+**Fórmulas que estás verificando con código:**
+
+$$\text{writing score} = b_0 + b_1 \times \text{gender\_dummy} \qquad\qquad b_1 = \bar{y}_{\text{mujeres}} - \bar{y}_{\text{hombres}}$$
+
+$$t = \frac{\bar{y}_{\text{mujeres}} - \bar{y}_{\text{hombres}}}{SE(\bar{y}_{\text{mujeres}} - \bar{y}_{\text{hombres}})}$$
+
+`resultado_dummy.intercept` (= `b0`) debería salir igual al promedio de los hombres (grupo codificado
+como 0), y `resultado_dummy.slope` (= `b1`) igual a la diferencia de promedios mujeres − hombres; y ese
+mismo `b1`, dividido por su error estándar, debería coincidir con el `t` de `ttest_ind`.
 
 ```python
 hombres = df.loc[df["gender"] == "male", "writing score"]

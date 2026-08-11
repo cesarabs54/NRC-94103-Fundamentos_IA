@@ -105,6 +105,6 @@ explica *por qué* existen.
 
 ---
 
-*Generado a partir de una conversación guiada sobre `StudentsPerformance.csv` — ver también los documentos
+*Generado a partir del archivo `StudentsPerformance.csv` — ver también los documentos
 de la Semana 6 (`01_Estadistica_inferencial_conceptos.md`, `02_Pruebas_Hipotesis_conceptos.md`) para
 profundizar con más ejercicios.*

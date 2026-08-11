@@ -422,7 +422,7 @@ Estas son las mismas fórmulas que `scipy.stats` calcula por ti en
 [`Taller_03_Prueba_Hipotesis_conceptos.md`](Taller_03_Prueba_Hipotesis_conceptos.md) (y que ves
 implementadas paso a paso en el *notebook* del profesor).
 
-**Material relacionado en esta carpeta:** presentación [`02_Prueba_Hipotesis.pptx`](02_Prueba_Hipotesis_conceptos.pptx),
+**Material relacionado en esta carpeta:** presentación [`02_Prueba_Hipotesis.pptx`](02_Prueba_Hipotesis_conceptos_profesor.pptx),
 taller [`Taller_02_Prueba_Hipotesis.md`](Taller_03_Prueba_Hipotesis_conceptos.md) (con código en Python y su clave de
 respuestas), y el documento conceptual previo
 [`01_Estadistica_inferencial_conceptos.md`](01_Estadistica_inferencial_conceptos.md).

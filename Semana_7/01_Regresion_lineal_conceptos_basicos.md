@@ -318,7 +318,7 @@ logística), no una regresión lineal clásica.
 
 ---
 
-## Resumen para tu portafolio (en una frase cada uno)
+## Resumen
 
 1. **Estadística e IA**: la IA, en el fondo, usa herramientas estadísticas para encontrar y validar patrones
    en los datos, como la relación entre leer bien y escribir bien.

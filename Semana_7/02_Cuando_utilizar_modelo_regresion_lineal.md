@@ -198,7 +198,7 @@ Antes de ajustar un modelo de regresión lineal, revisa:
 | 5 | ¿Revisé la correlación entre mis predictoras? | Si es muy alta entre dos de ellas, considera dejar solo una. |
 | 6 | ¿Voy a predecir dentro del rango de datos que vio el modelo? | Si no, esa predicción es una extrapolación no confiable. |
 
-## Resumen para tu portafolio (en una frase cada uno)
+## Resumen
 
 1. **Las tres grandes preguntas**: ¿es numérica la variable a predecir?, ¿son numéricas las predictoras?, y
    ¿son pocas y con pocos niveles las categóricas? — si las tres apuntan a favor, la regresión lineal es un

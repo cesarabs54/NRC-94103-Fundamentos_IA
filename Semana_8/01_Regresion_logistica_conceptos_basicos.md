@@ -366,7 +366,7 @@ sí, como `reading score` y `writing score` en este *dataset*).
 
 ---
 
-## Resumen para tu portafolio (en una frase cada uno)
+## Resumen
 
 1. **De números a categorías**: la regresión logística predice la probabilidad de un evento binario
    (aprueba / no aprueba), no un número continuo como la regresión lineal.

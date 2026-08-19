@@ -158,7 +158,7 @@ pero cada uno según el criterio que le corresponde a su propio tipo de problema
 
 ---
 
-## 6. Resumen para tu portafolio
+## 6. Resumen
 
 1. **Misma familia, distinta pregunta**: ambas combinan variables con coeficientes (`b0 + b1·X`), pero la
    lineal predice un número y la logística predice la probabilidad de una categoría.

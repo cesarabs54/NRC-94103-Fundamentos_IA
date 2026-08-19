@@ -6,7 +6,7 @@ Este taller está pensado para que afiances, en orden, los conceptos que evalúa
 mismas preguntas del examen: son ejercicios previos, con cálculos completos, para que llegues a la
 evaluación entendiendo el *por qué* de cada respuesta y no solo memorizando cuál opción marcar.
 
-Usamos el mismo caso guía y los mismos datos reales del curso: `StudentsPerformance.csv` (1000
+Usamos el mismo caso guía y los mismos datos reales del curso: `../StudentsPerformance.csv` (1000
 estudiantes), donde `Y = 1` si el estudiante **aprueba matemáticas** (`math score >= 60`) y `Y = 0` si no
 aprueba, y `X = reading score` como variable predictora. Al ajustar el modelo sobre los 1000 estudiantes se
 obtiene:

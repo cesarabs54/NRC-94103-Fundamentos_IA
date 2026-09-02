@@ -1,5 +1,5 @@
 # Taller — Análisis exploratorio de variables categóricas y numéricas
-### Versión ESTUDIANTE
+
 ### Dataset: `StudentsPerformance.csv`
 
 **Instrucciones generales:**
